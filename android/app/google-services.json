@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "244204954130",
+    "project_id": "boxclub-5c820",
+    "storage_bucket": "boxclub-5c820.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244204954130:android:22bcca7d8b331afb51eecb",
+        "android_client_info": {
+          "package_name": "com.boxclub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO2WLdKoev0nksKbkwPo9PEaipvx3JTcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
