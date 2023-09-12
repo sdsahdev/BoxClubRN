@@ -6,9 +6,8 @@ import { Colors, Strings, ImagePath } from '../AllData/Utill';
 import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
 
-import ProgressLoader from 'rn-progress-loader';
 
-const LoginScreen = ({ navigation }) => {
+const Registerscreen = ({ navigation }) => {
     const [userName, setuserName] = useState('')
     const handletxtChange = (text) => {
         setuserName(text)
@@ -24,38 +23,55 @@ const LoginScreen = ({ navigation }) => {
 
                     <FastImage
                         source={ImagePath.boll}
-                        style={{ height: hp(7), width: wp(20), }}
-                        resizeMode="contain"
+                        style={{ flex: 1, }}
+                        resizeMode="center"
                     />
 
                 </View>
                 <Text style={styles.titelText}>
-                    Welcome back!{'\n'}
-                    Login to continue
+                    Hello!{'\n'}
+                    Signup to get started
                 </Text>
-                <View style={{ marginTop: hp(4) }}>
 
-                    <Input called={false} onChangeText={handletxtChange} name={'Email'} img={ImagePath.mail} headerText={''} />
-                    <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.password} headerText={''} eye={true} />
+                <Input called={false} onChangeText={handletxtChange} name={'Name'} img={ImagePath.user} headerText={''} />
+                <Input called={false} onChangeText={handletxtChange} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
+                <Input called={false} onChangeText={handletxtChange} name={'Enter your phonenumber'} img={ImagePath.telephone} headerText={''} />
+                <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.password} headerText={''} eye={true} />
+                <Input called={false} onChangeText={handletxtChange} name={'Confirm your password'} img={ImagePath.password} headerText={''} eye={true} />
+
+                <View style={styles.checkview}>
+
+                    <CheckBox
+                        style={{ marginStart: hp(4), marginHorizontal: wp(2) }}
+                        onClick={() => {
+                        }}
+                        isChecked={true}
+                    />
+                    <Text style={{ fontSize: wp(4), flex: 1 }}>
+                        I agree with all <Text style={styles.highight}> term & conditions </Text>and <Text style={styles.highight}>privacy polices.</Text>
+                    </Text>
+
                 </View>
-
 
                 <TouchableOpacity style={styles.btnstyle}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
-                        Login
+                        Sign Up
                     </Text>
                 </TouchableOpacity>
-                <Text style={{ flex: 1, textAlign: 'center', marginTop: hp(3) }}>
-                    Don’t have an account? <Text style={styles.highight} onPress={() => navigation.navigate('OtpScreen')}>Sign Up</Text>
+                <Text style={{ flex: 1, textAlign: 'center', marginTop: hp(2.5), fontSize: wp(3.5) }}>
+                    Already have an account? <Text style={styles.highight} onPress={() => navigation.navigate('LoginScreen')}>Login</Text>
                 </Text>
             </View>
             {/* </ImageBackground> */}
+
+
 
         </View>
     )
 }
 
-export default LoginScreen
+export default Registerscreen;
+
 
 const styles = StyleSheet.create({
     bgimage: {
@@ -69,8 +85,7 @@ const styles = StyleSheet.create({
     },
     imgstyle: {
         width: wp(14),
-        height: hp(10),
-        marginTop: hp(2),
+        height: hp(7),
         marginStart: hp(4),
     },
     titelText: {
@@ -91,6 +106,6 @@ const styles = StyleSheet.create({
         marginHorizontal: wp(7),
         paddingVertical: hp(1.5),
         borderRadius: wp(3),
-        marginTop: hp(3)
+        marginTop: hp(1)
     }
 })

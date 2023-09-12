@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
-import { Colors, Strings, ImagePath } from '../AllData/constants';
+import { Colors, Strings, ImagePath } from '../AllData/Utill';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
-const Input = ({ name, onChangeText, headerText, eye, called, defaults, img }) => {
+const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two }) => {
     const [secure, setSecure] = useState(false);
     const [inputValue, setInputValue] = useState(defaults);
 
@@ -14,14 +14,14 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img }) =
     };
 
     return (
-        <View style={{}}>
+        <View style={{ flex: two && 1 }}>
             {headerText === '' ? null :
                 <Text style={styles.headertx}>
-                    {headerText}ss
+                    {headerText}
                 </Text>
             }
             <View style={styles.fillDetails}>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
                     <Image
                         source={img}
                         style={styles.phnimage}
@@ -39,8 +39,8 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img }) =
                 {eye ? <View>
                     <TouchableOpacity onPress={() => setSecure(!secure)} style={{ alignSelf: 'center' }}>
                         <Image
-                            source={img}
-                            style={{ alignSelf: 'flex-end', height: 15, width: 20, justifyContent: 'center', tintColor: Colors.blue }}
+                            source={secure ? ImagePath.hide : ImagePath.view}
+                            style={{ alignSelf: 'flex-end', height: 20, width: 20, justifyContent: 'center', tintColor: Colors.blue }}
                             resizeMode="center"
                         />
                     </TouchableOpacity>

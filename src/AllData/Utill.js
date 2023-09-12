@@ -18,4 +18,13 @@ export const ImagePath = {
     mail: require('../../assets/Image/mail.png'),
     user: require('../../assets/Image/user.png'),
     password: require('../../assets/Image/password.png'),
+    hide: require('../../assets/Image/hide.png'),
+    view: require('../../assets/Image/view.png'),
+    emailsent: require('../../assets/Image/emailsent.png'),
+    telephone: require('../../assets/Image/telephone.png'),
+    Gallary: require('../../assets/Image/Gallary.png'),
+    Boxname: require('../../assets/Image/Boxname.png'),
+    locationIcon: require('../../assets/Image/locationIcon.png'),
+    size: require('../../assets/Image/size.png'),
+    time: require('../../assets/Image/time.png'),
 }
