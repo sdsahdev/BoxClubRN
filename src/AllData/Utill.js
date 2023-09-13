@@ -27,4 +27,6 @@ export const ImagePath = {
     locationIcon: require('../../assets/Image/locationIcon.png'),
     size: require('../../assets/Image/size.png'),
     time: require('../../assets/Image/time.png'),
+    sportdata: require('../../assets/Image/sportdata.png'),
+    rupee: require('../../assets/Image/rupee.png'),
 }

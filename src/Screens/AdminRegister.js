@@ -11,7 +11,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Colors, Strings, ImagePath } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
-const AdminRegister = () => {
+const AdminRegister = ({ navigation }) => {
     const handletxtChange = () => {
 
     }
@@ -41,9 +41,9 @@ const AdminRegister = () => {
                 <Input called={false} onChangeText={handletxtChange} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
                 <Input called={false} onChangeText={handletxtChange} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
             </View>
-            <TouchableOpacity style={styles.btnstyle}>
+            <TouchableOpacity onPress={() => navigation.navigate("Sport")} style={styles.btnstyle}>
                 <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
-                    Login
+                    Continue
                 </Text>
             </TouchableOpacity>
         </View>
