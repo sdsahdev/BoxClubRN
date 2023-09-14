@@ -29,4 +29,9 @@ export const ImagePath = {
     time: require('../../assets/Image/time.png'),
     sportdata: require('../../assets/Image/sportdata.png'),
     rupee: require('../../assets/Image/rupee.png'),
+    box1: require('../../assets/Image/box1.png'),
+    box2: require('../../assets/Image/box2.png'),
+    box3: require('../../assets/Image/box3.png'),
+    notification: require('../../assets/Image/notification.png'),
+    menu: require('../../assets/Image/menu.png'),
 }
