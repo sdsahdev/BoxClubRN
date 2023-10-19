@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
 
     const renderItem = ({ item, index }) => {
         return (
-            <View style={{ backgroundColor: '#fff', margin: wp(4), borderRadius: 6 }}>
+            <View style={{ backgroundColor: '#fff', margin: wp(4), borderRadius: 6, padding: 10, }}>
                 <FastImage
                     source={item.image}
                     style={{
@@ -37,6 +37,7 @@ const HomeScreen = ({ navigation }) => {
                         alignSelf: 'center',
                         margin: wp(4),
                         borderRadius: 8,
+
                     }}
                 />
                 <View
@@ -69,14 +70,26 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: Colors.blue }}>
-            <FastImage
-                source={ImagePath.menu}
-                style={{ width: wp(4), height: hp(8), backgroundColor: '#000' }}
-                resizeMode="center"
-            />
+            <Image style={{ position: 'absolute', height: hp(17), width: '100%' }} source={ImagePath.homebg} />
+            <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginTop: hp(4) }}>
 
+                <FastImage
+                    source={ImagePath.menu}
+                    style={{ width: wp(10), margin: hp(2), height: hp(8), }}
+                    resizeMode="contain"
+                />
+                <Text style={{ color: '#fff', fontSize: wp(7), textAlign: 'center', alignSelf: 'center' }}>
+                    BoxClub
+                </Text>
+                <FastImage
+                    source={ImagePath.notification}
+                    style={{ width: wp(10), margin: hp(2), height: hp(8), }}
+                    resizeMode="contain"
+                />
+
+            </View>
             <View style={styles.bottomview}>
-                <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false} />
+                <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false} style={{ padding: 10 }} />
             </View>
         </View>
     );
@@ -94,6 +107,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
-        paddingBottom: hp(15)
+        paddingBottom: hp(15),
+        marginBottom: hp(22)
     },
 });

@@ -34,4 +34,5 @@ export const ImagePath = {
     box3: require('../../assets/Image/box3.png'),
     notification: require('../../assets/Image/notification.png'),
     menu: require('../../assets/Image/menu.png'),
+    homebg: require('../../assets/Image/homebg.png'),
 }

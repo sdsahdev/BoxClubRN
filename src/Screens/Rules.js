@@ -20,14 +20,14 @@ import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
 
 const Rules = () => {
-    const data = [
-        { id: 1, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-    ];
+        const data = [
+            { id: 1, name: 'Cricket', image: ImagePath.sportdata },
+            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+        ];
 
 
     const Rule = [

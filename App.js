@@ -10,6 +10,7 @@ import Sport from './src/Screens/Sport';
 import Time from './src/Screens/Time';
 import Rules from './src/Screens/Rules';
 import HomeScreen from './src/Screens/HomeScreen';
+import DrawerScreen from './src/Screens/DrawerScreen';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="Time" component={Time} />
         <Stack.Screen name="Rules" component={Rules} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="DrawerScreen" component={DrawerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
