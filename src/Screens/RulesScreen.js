@@ -19,15 +19,15 @@ import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
 
-const Rules = () => {
-        const data = [
-            { id: 1, name: 'Cricket', image: ImagePath.sportdata },
-            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-            { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        ];
+const RulesScreen = () => {
+    const data = [
+        { id: 1, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+    ];
 
 
     const Rule = [
@@ -130,7 +130,7 @@ const Rules = () => {
     );
 };
 
-export default Rules;
+export default RulesScreen;
 
 const styles = StyleSheet.create({
     btnstyle: {

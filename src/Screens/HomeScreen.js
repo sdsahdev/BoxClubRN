@@ -14,10 +14,12 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { Colors, Strings, ImagePath } from '../AllData/Utill';
-import ProgressLoader from 'rn-progress-loader';
-import Input from '../Commponent/Input';
-import CheckBox from 'react-native-check-box';
+import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
+// import ProgressLoader from 'rn-progress-loader';
+// import Input from '../Commponent/Input';
+// import CheckBox from 'react-native-check-box';
+
+
 const HomeScreen = ({ navigation }) => {
     const data = [
         { id: 1, name: 'Cricket', image: ImagePath.box1 },
@@ -27,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
 
     const renderItem = ({ item, index }) => {
         return (
-            <View style={{ backgroundColor: '#fff', margin: wp(4), borderRadius: 6, padding: 10, }}>
+            <TouchableOpacity style={{ backgroundColor: '#fff', margin: wp(4), borderRadius: 6, padding: 10, }} onPress={() => navigation.navigate(Routs.BoxDetailsScreen)}>
                 <FastImage
                     source={item.image}
                     style={{
@@ -64,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={{ alignSelf: 'center', marginTop: 8 }}>hour</Text>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     };
 
@@ -89,7 +91,7 @@ const HomeScreen = ({ navigation }) => {
 
             </View>
             <View style={styles.bottomview}>
-                <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false} style={{ padding: 10 }} />
+                <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false} style={{ padding: 5, marginBottom: hp(10) }} />
             </View>
         </View>
     );

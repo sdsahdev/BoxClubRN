@@ -1,9 +1,10 @@
 // constants.js
 export const Colors = {
     blue: '#2852BC',
-    secondary: '#000',
+    black: '#000',
     background: '#F5F5F5',
-    text: '#FF0000',
+    red: '#FF0000',
+    sky: '#91c8f2',
 };
 
 export const Strings = {
@@ -11,6 +12,22 @@ export const Strings = {
     loginButtonText: 'Login',
     signUpButtonText: 'Sign Up',
 };
+export const Routs = {
+    BottomTabScreen: 'BottomTabScreen',
+    CancelReqScreen: 'CancelReqScreen',
+    InboxScreen: 'InboxScreen',
+    LoginScreen: 'LoginScreen',
+    Registerscreen: 'Registerscreen',
+    OtpScreen: 'OtpScreen',
+    AdminRegister: 'AdminRegister',
+    SportScreen: 'SportScreen',
+    TimeScreen: 'TimeScreen',
+    RulesScreen: 'RulesScreen',
+    HomeScreen: 'HomeScreen',
+    DrawerScreen: 'DrawerScreen',
+    BoxDetailsScreen: 'BoxDetailsScreen',
+    DateTimeScreen: 'DateTimeScreen'
+}
 export const ImagePath = {
 
     bgmain: require('../../assets/Image/bgmain.png'),
@@ -35,4 +52,26 @@ export const ImagePath = {
     notification: require('../../assets/Image/notification.png'),
     menu: require('../../assets/Image/menu.png'),
     homebg: require('../../assets/Image/homebg.png'),
+
+
+    call: require('../../assets/Image/call.png'),
+    document: require('../../assets/Image/document.png'),
+    filter: require('../../assets/Image/filter.png'),
+    history: require('../../assets/Image/history.png'),
+    home: require('../../assets/Image/home.png'),
+    Locaker: require('../../assets/Image/Locaker.png'),
+    Location: require('../../assets/Image/Location.png'),
+    logout: require('../../assets/Image/logout.png'),
+    multiply: require('../../assets/Image/multiply.png'),
+    parking: require('../../assets/Image/parking.png'),
+    parking: require('../../assets/Image/parking.png'),
+    search: require('../../assets/Image/search.png'),
+    search: require('../../assets/Image/search.png'),
+    water: require('../../assets/Image/water.png'),
+    waiting: require('../../assets/Image/waiting.png'),
+    bat: require('../../assets/Image/bat.png'),
+    backbg: require('../../assets/Image/backbg.png'),
+    share: require('../../assets/Image/share.png'),
+    backScreen: require('../../assets/Image/backScreen.png'),
+    headerbg: require('../../assets/Image/headerbg.png'),
 }

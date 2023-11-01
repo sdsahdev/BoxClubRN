@@ -8,7 +8,7 @@ import {
 import React, { useState, useRef, useEffect } from 'react';
 import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Colors, Strings, ImagePath } from '../AllData/Utill';
+import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 
 const OtpScreen = ({ navigation }) => {
@@ -39,7 +39,7 @@ const OtpScreen = ({ navigation }) => {
     };
 
     const handleSubmit = () => {
-        navigation.navigate('AdminRegister');
+        navigation.navigate(Routs.AdminRegister);
         // console.log(otp, "==otp scere")
         // if (randomOTP === otp) {
         //     callApi();

@@ -12,11 +12,11 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { Colors, Strings, ImagePath } from '../AllData/Utill';
+import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 
-const Sport = ({ navigation }) => {
+const SportScreen = ({ navigation }) => {
     const data = [
         { id: 1, name: 'Cricket', image: ImagePath.sportdata },
         { id: 2, name: 'Cricket', image: ImagePath.sportdata },
@@ -55,7 +55,7 @@ const Sport = ({ navigation }) => {
                 numColumns={2}
             />
             <View style={styles.btnview}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Time")}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(Routs.TimeScreen)}>
                     <Text style={styles.btntxt}>back</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn}>
@@ -66,7 +66,7 @@ const Sport = ({ navigation }) => {
     );
 };
 
-export default Sport;
+export default SportScreen;
 
 const styles = StyleSheet.create({
     btnview: {

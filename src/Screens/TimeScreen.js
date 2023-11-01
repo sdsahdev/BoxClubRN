@@ -12,11 +12,11 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { Colors, Strings, ImagePath } from '../AllData/Utill';
+import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 
-const Time = ({ navigation }) => {
+const TimeScreen = ({ navigation }) => {
     const handletxtChange = () => {
 
     }
@@ -76,7 +76,7 @@ const Time = ({ navigation }) => {
                     <TouchableOpacity style={styles.btn} >
                         <Text style={styles.btntxt}>back</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Rules")}>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(Routs.RulesScreen)}>
                         <Text style={styles.btntxt}>Next</Text>
                     </TouchableOpacity>
                 </View>
@@ -85,7 +85,7 @@ const Time = ({ navigation }) => {
     )
 }
 
-export default Time
+export default TimeScreen
 
 const styles = StyleSheet.create({
     btnview: {

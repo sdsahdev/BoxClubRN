@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, ImageBackground, Image, TouchableOpacity } from
 import React, { useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Colors, Strings, ImagePath } from '../AllData/Utill';
+import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
 
@@ -46,7 +46,7 @@ const LoginScreen = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
                 <Text style={{ flex: 1, textAlign: 'center', marginTop: hp(3) }}>
-                    Don’t have an account? <Text style={styles.highight} onPress={() => navigation.navigate('OtpScreen')}>Sign Up</Text>
+                    Don’t have an account? <Text style={styles.highight} onPress={() => navigation.navigate(Routs.OtpScreen)}>Sign Up</Text>
                 </Text>
             </View>
             {/* </ImageBackground> */}

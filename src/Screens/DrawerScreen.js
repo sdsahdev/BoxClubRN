@@ -11,6 +11,7 @@ export default function DrawerScreen() {
         <NavigationContainer>
             <Drawer.Navigator initialRouteName="Home">
                 <Drawer.Screen name="Home" component={HomeScreen} />
+                <Drawer.Screen name="Home" component={HomeScreen} />
                 {/* <Drawer.Screen name="Notifications" component={NotificationsScreen} /> */}
             </Drawer.Navigator>
         </NavigationContainer>
