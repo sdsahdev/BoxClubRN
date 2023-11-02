@@ -5,12 +5,61 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as APIS from '../APIS/Urls';
+import FlashMessage, {
+    showMessage,
+    hideMessage,
+    FlashMessageManager,
+} from 'react-native-flash-message';
 
 
 const Registerscreen = ({ navigation }) => {
     const [userName, setuserName] = useState('')
-    const handletxtChange = (text) => {
-        setuserName(text)
+    const [Email, setEamil] = useState('')
+    const [PhoneNumber, setPhoneNumber] = useState('')
+    const [password, setpassword] = useState('')
+    const [conPassword, setconPassword] = useState('')
+
+
+
+    const rbtn = () => {
+        AsyncStorage.setItem(Strings.ReEmailKey, Email);
+        AsyncStorage.setItem(Strings.ReNameKey, userName);
+        AsyncStorage.setItem(Strings.RephoneKey, PhoneNumber);
+        AsyncStorage.setItem(Strings.RepasswordKey, password);
+        const body_data = {
+            email: Email
+        }
+        fetch(`${APIS.bASE_URL}${APIS.Send_Otp}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body_data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                showMessage({
+                    message: `message send`,
+                    type: "Success",
+                    backgroundColor: "green", // background color
+                    color: "#fff", // text color
+
+                });
+            })
+            .catch(error => {
+                console.error('Error sending SMS:', error);
+                // Handle error or display an error message to the user
+                showMessage({
+                    message: `fail` + error,
+                    type: "Success",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+
+                });
+            });
     }
     return (
         <View style={{ flex: 1 }}>
@@ -33,11 +82,11 @@ const Registerscreen = ({ navigation }) => {
                     Signup to get started
                 </Text>
 
-                <Input called={false} onChangeText={handletxtChange} name={'Name'} img={ImagePath.user} headerText={''} />
-                <Input called={false} onChangeText={handletxtChange} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
-                <Input called={false} onChangeText={handletxtChange} name={'Enter your phonenumber'} img={ImagePath.telephone} headerText={''} />
-                <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.password} headerText={''} eye={true} />
-                <Input called={false} onChangeText={handletxtChange} name={'Confirm your password'} img={ImagePath.password} headerText={''} eye={true} />
+                <Input called={false} onChangeText={(text) => setuserName(text)} name={'Name'} img={ImagePath.user} headerText={''} />
+                <Input called={false} onChangeText={(text) => setEamil(text)} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
+                <Input called={false} onChangeText={(text) => setPhoneNumber(text)} name={'Enter your phonenumber'} img={ImagePath.telephone} headerText={''} />
+                <Input called={false} onChangeText={(text) => setpassword(text)} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
+                <Input called={false} onChangeText={(text) => setconPassword(text)} name={'Confirm your password'} img={ImagePath.loack} headerText={''} eye={true} />
 
                 <View style={styles.checkview}>
 
@@ -53,7 +102,7 @@ const Registerscreen = ({ navigation }) => {
 
                 </View>
 
-                <TouchableOpacity style={styles.btnstyle}>
+                <TouchableOpacity style={styles.btnstyle} onPress={() => rbtn()}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                         Sign Up
                     </Text>

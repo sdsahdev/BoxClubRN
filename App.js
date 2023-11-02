@@ -18,10 +18,12 @@ import BottomTabScreen from './BottomTab';
 import BoxDetailsScreen from './src/Screens/BoxDetailsScreen';
 import DateTimeScreen from './src/Screens/DateTimeScreen';
 import EditBoxDScreen from './src/Screens/EditBoxDScreen';
+import FlashMessage from 'react-native-flash-message';
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
+
     <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerMode: 'none' }} initialRouteName={Routs.LoginScreen}>
         <Stack.Screen name={Routs.BottomTabScreen} component={BottomTabScreen} />
@@ -40,6 +42,8 @@ const App = () => {
         <Stack.Screen name={Routs.BoxDetailsScreen} component={BoxDetailsScreen} />
         <Stack.Screen name={Routs.DateTimeScreen} component={DateTimeScreen} />
       </Stack.Navigator>
+      <FlashMessage position="bottom" />
+
     </NavigationContainer>
   )
 }

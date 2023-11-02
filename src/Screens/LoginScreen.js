@@ -7,6 +7,7 @@ import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
 
 import ProgressLoader from 'rn-progress-loader';
+import * as APIS from '../APIS/Urls';
 
 const LoginScreen = ({ navigation }) => {
     const [userName, setuserName] = useState('')
@@ -15,7 +16,6 @@ const LoginScreen = ({ navigation }) => {
     }
     const loginApi = () => {
 
-        
     }
     return (
         <View style={{ flex: 1 }}>
@@ -38,14 +38,13 @@ const LoginScreen = ({ navigation }) => {
                     Login to continue
                 </Text>
                 <View style={{ marginTop: hp(4) }}>
-
                     <Input called={false} onChangeText={handletxtChange} name={'Email'} img={ImagePath.mail} headerText={''} />
                     <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
                 </View>
 
 
                 <TouchableOpacity style={styles.btnstyle} onPress={() => {
-                    loginApi()
+                    navigation.navigate(Routs.Registerscreen)
                 }}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                         Login

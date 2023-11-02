@@ -11,6 +11,10 @@ export const Strings = {
     Iagreewith: 'I agree with all term & conditions and privacy polices',
     loginButtonText: 'Login',
     signUpButtonText: 'Sign Up',
+    ReEmailKey: 'ReEmailKey',
+    ReNameKey: 'ReNameKey',
+    RephoneKey: 'RephoneKey',
+    RepasswordKey: 'RepasswordKey',
 };
 export const Routs = {
     BottomTabScreen: 'BottomTabScreen',
