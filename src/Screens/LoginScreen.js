@@ -13,6 +13,10 @@ const LoginScreen = ({ navigation }) => {
     const handletxtChange = (text) => {
         setuserName(text)
     }
+    const loginApi = () => {
+
+        
+    }
     return (
         <View style={{ flex: 1 }}>
             {/* <ImageBackground style={{ flex: 1 , backgroundColor:'#fff'}} source={ImagePath.bgmain} resizeMode="contain"> */}
@@ -36,11 +40,13 @@ const LoginScreen = ({ navigation }) => {
                 <View style={{ marginTop: hp(4) }}>
 
                     <Input called={false} onChangeText={handletxtChange} name={'Email'} img={ImagePath.mail} headerText={''} />
-                    <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.password} headerText={''} eye={true} />
+                    <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
                 </View>
 
 
-                <TouchableOpacity style={styles.btnstyle}>
+                <TouchableOpacity style={styles.btnstyle} onPress={() => {
+                    loginApi()
+                }}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                         Login
                     </Text>

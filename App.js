@@ -17,14 +17,16 @@ import InboxScreen from './src/Screens/InboxScreen';
 import BottomTabScreen from './BottomTab';
 import BoxDetailsScreen from './src/Screens/BoxDetailsScreen';
 import DateTimeScreen from './src/Screens/DateTimeScreen';
+import EditBoxDScreen from './src/Screens/EditBoxDScreen';
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer >
-      <Stack.Navigator screenOptions={{ headerMode: 'none' }} initialRouteName={Routs.BottomTab}>
+      <Stack.Navigator screenOptions={{ headerMode: 'none' }} initialRouteName={Routs.LoginScreen}>
         <Stack.Screen name={Routs.BottomTabScreen} component={BottomTabScreen} />
         <Stack.Screen name={Routs.InboxScreen} component={InboxScreen} />
+        <Stack.Screen name={Routs.EditBoxDScreen} component={EditBoxDScreen} />
         <Stack.Screen name={Routs.CancelReqScreen} component={CancelReqScreen} />
         <Stack.Screen name={Routs.Registerscreen} component={Registerscreen} />
         <Stack.Screen name={Routs.LoginScreen} component={LoginScreen} />

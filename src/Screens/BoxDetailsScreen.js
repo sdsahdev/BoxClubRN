@@ -27,7 +27,7 @@ const BoxDetailsScreen = ({ navigation }) => {
                             resizeMode="cover"
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("EditBoxDScreen")}>
                         <FastImage
                             source={ImagePath.share}
                             style={styles.image2}
@@ -67,7 +67,6 @@ const BoxDetailsScreen = ({ navigation }) => {
                     <View>
                         <Facilities img={ImagePath.water} text3={"Water"} />
                         <Facilities img={ImagePath.parking} text3={"Parking"} />
-
                     </View>
 
 
@@ -75,7 +74,6 @@ const BoxDetailsScreen = ({ navigation }) => {
                 <TouchableOpacity >
                     <Titels text1={"View Venue Rules"} />
                 </TouchableOpacity>
-
 
                 <TouchableOpacity
                     style={styles.btn}

@@ -9,6 +9,7 @@ import HomeScreen from './src/Screens/HomeScreen';
 import CancelReq from './src/Screens/CancelReqScreen';
 import InboxScreen from './src/Screens/InboxScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
+import CancelReqScreen from './src/Screens/CancelReqScreen';
 
 
 
@@ -76,7 +77,7 @@ const BottomTabScreen = () => {
             label: 'Cancelattion',
             type: ImagePath.multiply, // Replace with actual image paths
             icon: 'search',
-            component: CancelReq,
+            component: CancelReqScreen,
             color: Colors.blue,
             alphaClr: Colors.sky,
         },

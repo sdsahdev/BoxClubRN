@@ -16,6 +16,7 @@ export const Routs = {
     BottomTabScreen: 'BottomTabScreen',
     CancelReqScreen: 'CancelReqScreen',
     InboxScreen: 'InboxScreen',
+    EditBoxDScreen: 'EditBoxDScreen',
     LoginScreen: 'LoginScreen',
     Registerscreen: 'Registerscreen',
     OtpScreen: 'OtpScreen',
@@ -66,7 +67,6 @@ export const ImagePath = {
     parking: require('../../assets/Image/parking.png'),
     parking: require('../../assets/Image/parking.png'),
     search: require('../../assets/Image/search.png'),
-    search: require('../../assets/Image/search.png'),
     water: require('../../assets/Image/water.png'),
     waiting: require('../../assets/Image/waiting.png'),
     bat: require('../../assets/Image/bat.png'),
@@ -74,4 +74,6 @@ export const ImagePath = {
     share: require('../../assets/Image/share.png'),
     backScreen: require('../../assets/Image/backScreen.png'),
     headerbg: require('../../assets/Image/headerbg.png'),
+    arrowdown: require('../../assets/Image/arrowdown.png'),
+    loack: require('../../assets/Image/loack.png'),
 }
