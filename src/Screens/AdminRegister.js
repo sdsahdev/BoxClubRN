@@ -11,14 +11,33 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
+
+import ImagePicker from 'react-native-image-crop-picker';
+
 const AdminRegister = ({ navigation }) => {
+
+    const [selectedImages, setSelectedImages] = useState([]);
+
     const handletxtChange = () => {
 
     }
+
+    const openImagePicker = async () => {
+        try {
+            const images = await ImagePicker.openPicker({
+                multiple: true,
+                mediaType: 'photo',
+            });
+            console.log(images.forEach(i => console.log(i.filename)));
+            setSelectedImages(images);
+        } catch (error) {
+            console.error('ImagePicker Error: ', error);
+        }
+    };
     return (
         <View style={styles.container}>
             <Text style={styles.titel}>Add your personal details</Text>
-            <View style={{
+            <TouchableOpacity style={{
                 height: hp(25),
                 borderWidth: 1,
                 borderStyle: 'dashed',
@@ -26,12 +45,12 @@ const AdminRegister = ({ navigation }) => {
                 margin: 20,
                 backgroundColor: '#eaf1f4',
                 justifyContent: 'center'
-            }}>
+            }} onPress={() => openImagePicker()}>
                 <FastImage source={ImagePath.Gallary} resizeMode='center' style={styles.gallimg} />
                 <Text style={{ textAlign: 'center' }}>
                     Add Miminun 3 photos of your venue
                 </Text>
-            </View>
+            </TouchableOpacity>
 
             <Input called={false} onChangeText={handletxtChange} name={'Gamebox net'} img={ImagePath.Boxname} headerText={''} />
             <Input called={false} onChangeText={handletxtChange} name={'Your Address'} img={ImagePath.locationIcon} headerText={''} />
@@ -46,12 +65,14 @@ const AdminRegister = ({ navigation }) => {
                     Continue
                 </Text>
             </TouchableOpacity>
+
         </View>
     )
 }
 
 export default AdminRegister
-
+// in  = 
+// soudi 94 ,  50 , 41, 67, 
 const styles = StyleSheet.create({
     btnstyle: {
         backgroundColor: Colors.blue,
