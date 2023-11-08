@@ -17,6 +17,9 @@ import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 
 const SportScreen = ({ navigation }) => {
+
+    const [selectSport, setselectSport] = useState([]);
+
     const data = [
         { id: 1, name: 'Cricket', image: ImagePath.sportdata },
         { id: 2, name: 'Cricket', image: ImagePath.sportdata },
@@ -24,9 +27,28 @@ const SportScreen = ({ navigation }) => {
         { id: 2, name: 'Cricket', image: ImagePath.sportdata },
         { id: 2, name: 'Cricket', image: ImagePath.sportdata },
     ];
+
+    const handleclick = (item) => {
+
+        const check = selectSport.filter(i => item.id === i.id)
+        if (!check) {
+            selectSport.push[item.id]
+            console.log(selectSport, "==selectSport");
+        } else {
+            const updatedSelectSport = selectSport.filter(i => i.id !== item.id);
+            setselectSport(updatedSelectSport);
+            console.log(item.id, "==selectSport remove");
+        }
+
+    }
+
     const renderItem = ({ item, index }) => {
+        // console.log(recheck, "==recheck");
+        const recheck = selectSport.some((i) => console.log(i, "check_"))
         return (
-            <View style={{ flex: 1, alignItems: 'center' }}>
+
+            <TouchableOpacity onPress={() => handleclick(item)} style={{ flex: 1, alignItems: 'center' }}>
+
                 <Image
                     source={item.image}
                     style={{
@@ -36,9 +58,10 @@ const SportScreen = ({ navigation }) => {
                         resizeMode: 'center',
                         borderRadius: 10,
                         marginTop: hp(2),
+                        tintColor: recheck && Colors.blue
                     }}
                 />
-            </View>
+            </TouchableOpacity>
         );
     };
     return (
