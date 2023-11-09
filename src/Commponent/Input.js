@@ -4,7 +4,7 @@ import { Colors, Strings, ImagePath } from '../AllData/Utill';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
-const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two }) => {
+const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two, editfalse, click, input }) => {
     const [secure, setSecure] = useState(false);
     const [inputValue, setInputValue] = useState(defaults);
 
@@ -14,7 +14,7 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two
     };
 
     return (
-        <View style={{ flex: two && 1 }}>
+        <TouchableOpacity style={{ flex: two && 1 }} onPress={click} >
             {headerText === '' ? null :
                 <Text style={styles.headertx}>
                     {headerText}
@@ -28,12 +28,14 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two
                         resizeMode="center"
                     />
                     <TextInput
+                        editable={!editfalse}
+                        selectTextOnFocus={!editfalse}
                         secureTextEntry={secure}
                         keyboardType={called ? 'phone-pad' : null}
                         placeholder={name}
                         style={styles.inputFild}
                         onChangeText={handleTextChange} // Set the onChangeText prop
-                        value={inputValue} // Set the value prop for controlled input
+                        value={editfalse === true ? input : inputValue} // Set the value prop for controlled input
                     />
                 </View>
                 {eye ? <View>
@@ -48,7 +50,7 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two
 
             </View>
 
-        </View>
+        </TouchableOpacity>
     );
 };
 

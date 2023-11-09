@@ -15,11 +15,65 @@ import {
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const TimeScreen = ({ navigation }) => {
+
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [activebt, setactivebt] = useState('');
+
+    const [Mopen, setMopen] = useState('');
+    const [Mclose, setMclose] = useState('');
+    const [Aopen, setAopen] = useState('');
+    const [Aclose, setAclose] = useState('');
+    const [Eopen, setEopen] = useState('');
+    const [Eclose, setEclose] = useState('');
+    const [Nopen, setNopen] = useState('');
+    const [Nclose, setNclose] = useState('');
+    // useEffect(() => {
+    //     // if (isDatePickerVisible) {
+    //     // showDatePicker();
+    //     console.log('if');
+    //     // } else {
+    //     console.log('else');
+    //     // }
+    // }, [isDatePickerVisible]);
+    useEffect(() => {
+        if (isDatePickerVisible) {
+            hideDatePicker();
+        } else {
+            showDatePicker();
+        }
+    }, [activebt]);
+
+
+    const setActivceAclick = (timeType) => {
+        console.log(`Opening time picker for: ${timeType}`);
+        setactivebt(timeType);
+        setDatePickerVisibility(!isDatePickerVisible);
+    };
+
     const handletxtChange = () => {
 
     }
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+
+    const handleConfirm = (date) => {
+        console.warn("A date has been picked: ", formattedTime);
+
+        const formattedTime = new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (activebt == '1') {
+            setopenTime(formattedTime)
+        } else {
+            setcloseTime(formattedTime)
+        }
+        hideDatePicker();
+    };
+
     return (
         <View style={{ flex: 1, }}>
             <ScrollView >
@@ -34,8 +88,8 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Morning slot</Text>
                         <View style={{ flexDirection: 'row' }}>
 
-                            <Input called={false} onChangeText={handletxtChange} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input called={false} onChangeText={handletxtChange} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Mopen} editfalse={true} click={() => setActivceAclick("1")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Mclose} editfalse={true} click={() => setActivceAclick("2")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
                         </View>
                         <Input called={false} onChangeText={handletxtChange} name={'Moring Price'} img={ImagePath.rupee} headerText={''} two={true} />
                     </View>
@@ -43,9 +97,8 @@ const TimeScreen = ({ navigation }) => {
 
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Afternoon slot</Text>
                         <View style={{ flexDirection: 'row' }}>
-
-                            <Input called={false} onChangeText={handletxtChange} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input called={false} onChangeText={handletxtChange} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Aopen} editfalse={true} click={() => setActivceAclick("3")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Aclose} editfalse={true} click={() => setActivceAclick("4")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
                         </View>
                         <Input called={false} onChangeText={handletxtChange} name={'Afternoon Price'} img={ImagePath.rupee} headerText={''} two={true} />
                     </View>
@@ -54,8 +107,8 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Evening slot</Text>
                         <View style={{ flexDirection: 'row' }}>
 
-                            <Input called={false} onChangeText={handletxtChange} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input called={false} onChangeText={handletxtChange} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Eopen} editfalse={true} click={() => setActivceAclick("5")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Eclose} editfalse={true} click={() => setActivceAclick("6")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
                         </View>
                         <Input called={false} onChangeText={handletxtChange} name={'Evening Price'} img={ImagePath.rupee} headerText={''} two={true} />
                     </View>
@@ -64,8 +117,8 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Night slot</Text>
                         <View style={{ flexDirection: 'row' }}>
 
-                            <Input called={false} onChangeText={handletxtChange} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input called={false} onChangeText={handletxtChange} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Nopen} editfalse={true} click={() => setActivceAclick("7")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input input={Nclose} editfalse={true} click={() => setActivceAclick("8")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
                         </View>
                         <Input called={false} onChangeText={handletxtChange} name={'Night Price'} img={ImagePath.rupee} headerText={''} two={true} />
                     </View>
@@ -80,6 +133,14 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={styles.btntxt}>Next</Text>
                     </TouchableOpacity>
                 </View>
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    locale="en_GB"
+                    is24hour={false}
+                    mode="time"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                />
             </ScrollView>
         </View>
     )

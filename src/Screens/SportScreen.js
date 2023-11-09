@@ -23,9 +23,9 @@ const SportScreen = ({ navigation }) => {
     const data = [
         { id: 1, name: 'Cricket', image: ImagePath.sportdata },
         { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 3, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 4, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 5, name: 'Cricket', image: ImagePath.sportdata },
     ];
 
     const handleclick = (item) => {
@@ -43,11 +43,16 @@ const SportScreen = ({ navigation }) => {
     }
 
     const renderItem = ({ item, index }) => {
-        // console.log(recheck, "==recheck");
-        const recheck = selectSport.some((i) => console.log(i, "check_"))
+        const isFound = selectSport.some(obj => obj.id == item.id)
         return (
 
-            <TouchableOpacity onPress={() => handleclick(item)} style={{ flex: 1, alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => {
+                if (isFound) {
+                    setselectSport(selectSport.filter(i => i.id != item.id))
+                } else {
+                    setselectSport([...selectSport, item])
+                }
+            }} style={{ flex: 1, alignItems: 'center' }}>
 
                 <Image
                     source={item.image}
@@ -58,7 +63,8 @@ const SportScreen = ({ navigation }) => {
                         resizeMode: 'center',
                         borderRadius: 10,
                         marginTop: hp(2),
-                        tintColor: recheck && Colors.blue
+                        borderColor: isFound ? 'red' : 'gray'
+                        , borderWidth: 1,
                     }}
                 />
             </TouchableOpacity>

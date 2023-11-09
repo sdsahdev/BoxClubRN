@@ -3,7 +3,8 @@ import {
     Text,
     StyleSheet,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import FastImage from 'react-native-fast-image'
@@ -18,8 +19,11 @@ import FlashMessage, {
     hideMessage,
     FlashMessageManager,
 } from 'react-native-flash-message';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const AdminRegister = ({ navigation }) => {
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [activebt, setactivebt] = useState('');
 
     const [selectedImages, setSelectedImages] = useState([]);
     const [isSlected, setisSelected] = useState(false);
@@ -30,6 +34,26 @@ const AdminRegister = ({ navigation }) => {
     const [openTime, setopenTime] = useState('');
     const [closeTime, setcloseTime] = useState('');
 
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+
+        const formattedTime = new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (activebt == '1') {
+            setopenTime(formattedTime)
+        } else {
+            setcloseTime(formattedTime)
+        }
+        console.warn("A date has been picked: ", formattedTime);
+
+        hideDatePicker();
+    };
 
     const openImagePicker = async () => {
         try {
@@ -97,46 +121,65 @@ const AdminRegister = ({ navigation }) => {
     const handlecltime = (text) => {
         setcloseTime(text)
     }
+    const setActivceAclick = (isVisible, timeType) => {
+        console.log(`Opening time picker for: ${timeType}`);
+        setactivebt(timeType);
+        showDatePicker();
+    };
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.titel}>Add your personal details</Text>
-            {isSlected == true ?
-                <TouchableOpacity style={styles.swipest} onPress={() => openImagePicker()}>
-                    <SwipList boxData={selectedImages} />
-                </TouchableOpacity> :
-                <TouchableOpacity style={{
-                    height: hp(25),
-                    borderWidth: 1,
-                    borderStyle: 'dashed',
-                    borderColor: Colors.blue,
-                    margin: 20,
-                    backgroundColor: '#eaf1f4',
-                    justifyContent: 'center'
-                }} onPress={() => openImagePicker()}>
-                    <View >
+        <ScrollView style={{ flex: 1, }}>
 
-                        <FastImage source={ImagePath.Gallary} resizeMode='center' style={styles.gallimg} />
-                        <Text style={{ textAlign: 'center' }}>
-                            Add Miminun 3 photos of your venue
-                        </Text>
-                    </View>
+            <View style={styles.container}>
+                <Text style={styles.titel}>Add your personal details</Text>
+                {isSlected == true ?
+                    <TouchableOpacity style={styles.swipest} onPress={() => openImagePicker()}>
+                        <SwipList boxData={selectedImages} />
+                    </TouchableOpacity> :
+                    <TouchableOpacity style={{
+                        height: hp(25),
+                        borderWidth: 1,
+                        borderStyle: 'dashed',
+                        borderColor: Colors.blue,
+                        margin: 20,
+                        backgroundColor: '#eaf1f4',
+                        justifyContent: 'center'
+                    }} onPress={() => openImagePicker()}>
+                        <View >
+
+                            <FastImage source={ImagePath.Gallary} resizeMode='center' style={styles.gallimg} />
+                            <Text style={{ textAlign: 'center' }}>
+                                Add Miminun 3 photos of your venue
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                }
+
+                <Input called={false} onChangeText={handleName} name={'Gamebox net'} img={ImagePath.Boxname} headerText={''} />
+                <Input called={false} onChangeText={handleadd} name={'Your Address'} img={ImagePath.locationIcon} headerText={''} />
+                <Input called={false} onChangeText={handlesize} name={'Size of your box'} img={ImagePath.size} headerText={''} />
+                <View style={{ flexDirection: 'row', marginBottom: hp(16) }}>
+
+                    <Input click={() => setActivceAclick(true, "1")} called={false} editfalse={true} input={openTime} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
+                    <Input click={() => setActivceAclick(true, "2")} called={false} editfalse={true} input={closeTime} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+
+                </View>
+                <TouchableOpacity onPress={() => navigateNext()} style={styles.btnstyle}>
+                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
+                        Continue
+                    </Text>
                 </TouchableOpacity>
-            }
-            <Input called={false} onChangeText={handleName} name={'Gamebox net'} img={ImagePath.Boxname} headerText={''} />
-            <Input called={false} onChangeText={handleadd} name={'Your Address'} img={ImagePath.locationIcon} headerText={''} />
-            <Input called={false} onChangeText={handlesize} name={'Size of your box'} img={ImagePath.size} headerText={''} />
-            <View style={{ flexDirection: 'row' }}>
-
-                <Input called={false} onChangeText={handleoptime} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                <Input called={false} onChangeText={handlecltime} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    locale="en_GB"
+                    is24hour={false}
+                    mode="time"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                />
             </View>
-            <TouchableOpacity onPress={() => navigateNext()} style={styles.btnstyle}>
-                <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
-                    Continue
-                </Text>
-            </TouchableOpacity>
+        </ScrollView>
 
-        </View>
     )
 }
 
