@@ -21,8 +21,37 @@ const Registerscreen = ({ navigation }) => {
     const [password, setpassword] = useState('')
     const [conPassword, setconPassword] = useState('')
 
+    const loginApi = () => {
+        const body_data = {
+        }
 
+        fetch(`${APIS.ADMIN_bASE_URL}${APIS.Admin_Registration}`, {
+            method: 'POST',
+            body: JSON.stringify(body_data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                showMessage({
+                    message: data.message,
+                    type: "Success",
+                    backgroundColor: "green", // background color
+                    color: "#fff", // text color
 
+                });
+            })
+            .catch(error => {
+                console.error('Error sending SMS:', error);
+                // Handle error or display an error message to the user
+                showMessage({
+                    message: `fail` + error,
+                    type: "Success",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+
+                });
+            });
+    }
     const rbtn = () => {
         AsyncStorage.setItem(Strings.ReEmailKey, Email);
         AsyncStorage.setItem(Strings.ReNameKey, userName);

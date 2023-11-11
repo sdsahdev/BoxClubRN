@@ -8,14 +8,54 @@ import CheckBox from 'react-native-check-box'
 
 import ProgressLoader from 'rn-progress-loader';
 import * as APIS from '../APIS/Urls';
+import FlashMessage, {
+    showMessage,
+    hideMessage,
+    FlashMessageManager,
+} from 'react-native-flash-message';
 
 const LoginScreen = ({ navigation }) => {
-    const [userName, setuserName] = useState('')
+    const [email, setemail] = useState('')
+    const [password, setpassword] = useState('')
     const handletxtChange = (text) => {
-        setuserName(text)
+        setemail(text)
+    }
+    const handlepasword = (text) => {
+        setpassword(text)
     }
     const loginApi = () => {
+        const body_data = {
+            email: email,
+            password: password,
+            type: 'login'
+        }
 
+        fetch(`${APIS.ADMIN_bASE_URL}${APIS.Login}`, {
+            method: 'POST',
+            body: JSON.stringify(body_data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                showMessage({
+                    message: data.message,
+                    type: "Success",
+                    backgroundColor: "green", // background color
+                    color: "#fff", // text color
+
+                });
+            })
+            .catch(error => {
+                console.error('Error sending SMS:', error);
+                // Handle error or display an error message to the user
+                showMessage({
+                    message: `fail` + error,
+                    type: "Success",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+
+                });
+            });
     }
     return (
         <View style={{ flex: 1 }}>
@@ -39,12 +79,13 @@ const LoginScreen = ({ navigation }) => {
                 </Text>
                 <View style={{ marginTop: hp(4) }}>
                     <Input called={false} onChangeText={handletxtChange} name={'Email'} img={ImagePath.mail} headerText={''} />
-                    <Input called={false} onChangeText={handletxtChange} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
+                    <Input called={false} onChangeText={handlepasword} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
                 </View>
 
 
                 <TouchableOpacity style={styles.btnstyle} onPress={() => {
                     navigation.navigate(Routs.Registerscreen)
+                    // loginApi()
                 }}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                         Login

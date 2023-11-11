@@ -15,11 +15,13 @@ import {
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from "react-native-modal-datetime-picker";
+import moment from 'moment'
 
 const TimeScreen = ({ navigation }) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [is12, setis12] = useState(false);
     const [activebt, setactivebt] = useState('');
 
     const [Mopen, setMopen] = useState('');
@@ -30,27 +32,30 @@ const TimeScreen = ({ navigation }) => {
     const [Eclose, setEclose] = useState('');
     const [Nopen, setNopen] = useState('');
     const [Nclose, setNclose] = useState('');
-    // useEffect(() => {
-    //     // if (isDatePickerVisible) {
-    //     // showDatePicker();
-    //     console.log('if');
-    //     // } else {
-    //     console.log('else');
-    //     // }
-    // }, [isDatePickerVisible]);
+
+
     useEffect(() => {
         if (isDatePickerVisible) {
-            hideDatePicker();
+            // showDatePicker();
+            console.log('if');
         } else {
-            showDatePicker();
+            console.log('else');
         }
-    }, [activebt]);
+    }, [isDatePickerVisible]);
+
+    // useEffect(() => {
+    //     if (isDatePickerVisible) {
+    //         hideDatePicker();
+    //     } else {
+    //         // showDatePicker();
+    //     }
+    // }, [activebt]);
 
 
     const setActivceAclick = (timeType) => {
-        console.log(`Opening time picker for: ${timeType}`);
+        console.log(`Opening time picker for: ${timeType}`, isDatePickerVisible);
         setactivebt(timeType);
-        setDatePickerVisibility(!isDatePickerVisible);
+        setDatePickerVisibility(true);
     };
 
     const handletxtChange = () => {
@@ -63,15 +68,9 @@ const TimeScreen = ({ navigation }) => {
 
 
     const handleConfirm = (date) => {
-        console.warn("A date has been picked: ", formattedTime);
 
-        const formattedTime = new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        if (activebt == '1') {
-            setopenTime(formattedTime)
-        } else {
-            setcloseTime(formattedTime)
-        }
-        hideDatePicker();
+        const twelveHourFormat = moment(date, "HH:mm").format("hh:mm A");
+        setDatePickerVisibility(false);
     };
 
     return (
@@ -112,7 +111,7 @@ const TimeScreen = ({ navigation }) => {
                         </View>
                         <Input called={false} onChangeText={handletxtChange} name={'Evening Price'} img={ImagePath.rupee} headerText={''} two={true} />
                     </View>
-                    <View >
+                    <View>
 
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Night slot</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -133,9 +132,8 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={styles.btntxt}>Next</Text>
                     </TouchableOpacity>
                 </View>
-                <DateTimePickerModal
+                <DatePicker
                     isVisible={isDatePickerVisible}
-                    locale="en_GB"
                     is24hour={false}
                     mode="time"
                     onConfirm={handleConfirm}
