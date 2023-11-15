@@ -260,7 +260,7 @@ const InboxScreen = ({ navigation }) => {
     return (
         <View style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>
-                <ScrollView >
+                <ScrollView showsVerticalScrollIndicator={false}>
 
                     <View >
                         <TopHeader name={"Inbox"} />

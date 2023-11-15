@@ -4,7 +4,9 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
-    FlatList, Image, ScrollView
+    FlatList,
+    Image,
+    ScrollView,
 } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import FastImage from 'react-native-fast-image';
@@ -15,120 +17,248 @@ import {
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
-import DatePicker from "react-native-modal-datetime-picker";
-import moment from 'moment'
+import DatePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 const TimeScreen = ({ navigation }) => {
-
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [is12, setis12] = useState(false);
     const [activebt, setactivebt] = useState('');
 
     const [Mopen, setMopen] = useState('');
     const [Mclose, setMclose] = useState('');
+    const [Mprice, setMprice] = useState('');
     const [Aopen, setAopen] = useState('');
     const [Aclose, setAclose] = useState('');
+    const [Aprice, setAprice] = useState('');
     const [Eopen, setEopen] = useState('');
     const [Eclose, setEclose] = useState('');
+    const [Eprice, setEprice] = useState('');
     const [Nopen, setNopen] = useState('');
     const [Nclose, setNclose] = useState('');
+    const [Nprice, setNprice] = useState('');
 
+    const setactivebst = timeType => {
 
-    useEffect(() => {
-        if (isDatePickerVisible) {
-            // showDatePicker();
-            console.log('if');
-        } else {
-            console.log('else');
-        }
-    }, [isDatePickerVisible]);
-
-    // useEffect(() => {
-    //     if (isDatePickerVisible) {
-    //         hideDatePicker();
-    //     } else {
-    //         // showDatePicker();
-    //     }
-    // }, [activebt]);
-
-
-    const setActivceAclick = (timeType) => {
         console.log(`Opening time picker for: ${timeType}`, isDatePickerVisible);
         setactivebt(timeType);
         setDatePickerVisibility(true);
     };
 
-    const handletxtChange = () => {
-
-    }
-
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
 
+    const handleConfirm = date => {
+        const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm A');
 
-    const handleConfirm = (date) => {
+        switch (activebt) {
+            case '1':
+                setMopen(twelveHourFormat);
+                break;
+            case '2':
+                setMclose(twelveHourFormat);
 
-        const twelveHourFormat = moment(date, "HH:mm").format("hh:mm A");
+                break;
+            case '3':
+                setAopen(twelveHourFormat);
+
+                break;
+            case '4':
+                setAclose(twelveHourFormat);
+
+                break;
+            case '5':
+                setEopen(twelveHourFormat);
+                break;
+            case '6':
+                setEclose(twelveHourFormat);
+                break;
+            case '7':
+                setNopen(twelveHourFormat);
+
+                break;
+            case '8':
+                setNclose(twelveHourFormat);
+
+                break;
+
+            default:
+                break;
+        }
+
         setDatePickerVisibility(false);
     };
+    const check_back = () => {
+        console.log(Mprice, "mprive");
+        console.log(Aprice, "aprive");
+        console.log(Eprice, "eprive");
+        console.log(Nprice, "Nprice");
+        console.log(Mopen, "1");
+        console.log(Mclose, "2");
+        console.log(Aopen, "3");
+        console.log(Aclose, "4");
+        console.log(Eopen, "5");
+        console.log(Eclose, "6");
+        console.log(Nopen, "7");
+        console.log(Nclose, "8");
+
+    }
 
     return (
-        <View style={{ flex: 1, }}>
-            <ScrollView >
-
+        <View style={{ flex: 1 }}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.titel}>Add your personal details</Text>
                 <Text style={{ marginStart: wp(4), marginTop: wp(3) }}>
                     Set time and rate
                 </Text>
                 <View style={{ flex: 1, marginBottom: hp(10) }}>
-                    <View >
-
+                    <View>
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Morning slot</Text>
                         <View style={{ flexDirection: 'row' }}>
+                            <Input
+                                input={Mopen}
+                                editfalse={true}
+                                click={() => setactivebst('1')}
+                                called={false}
+                                name={'Open time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
 
-                            <Input input={Mopen} editfalse={true} click={() => setActivceAclick("1")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input input={Mclose} editfalse={true} click={() => setActivceAclick("2")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                            />
+                            <Input
+                                input={Mclose}
+                                editfalse={true}
+                                click={() => setactivebst('2')}
+                                called={false}
+                                name={'Close time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
                         </View>
-                        <Input called={false} onChangeText={handletxtChange} name={'Moring Price'} img={ImagePath.rupee} headerText={''} two={true} />
-                    </View>
-                    <View >
-
-                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Afternoon slot</Text>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Input input={Aopen} editfalse={true} click={() => setActivceAclick("3")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input input={Aclose} editfalse={true} click={() => setActivceAclick("4")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
-                        </View>
-                        <Input called={false} onChangeText={handletxtChange} name={'Afternoon Price'} img={ImagePath.rupee} headerText={''} two={true} />
-                    </View>
-                    <View >
-
-                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Evening slot</Text>
-                        <View style={{ flexDirection: 'row' }}>
-
-                            <Input input={Eopen} editfalse={true} click={() => setActivceAclick("5")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input input={Eclose} editfalse={true} click={() => setActivceAclick("6")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
-                        </View>
-                        <Input called={false} onChangeText={handletxtChange} name={'Evening Price'} img={ImagePath.rupee} headerText={''} two={true} />
+                        <Input
+                            called={false}
+                            click_dis={true}
+                            onChangeText={(txt) => setMprice(txt)}
+                            name={'Moring Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
                     </View>
                     <View>
-
+                        <Text style={[styles.titel, { fontSize: wp(4) }]}>
+                            Afternoon slot
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Input
+                                input={Aopen}
+                                editfalse={true}
+                                click={() => setactivebst('3')}
+                                called={false}
+                                name={'Open time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
+                            <Input
+                                input={Aclose}
+                                editfalse={true}
+                                click={() => setactivebst('4')}
+                                called={false}
+                                name={'Close time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
+                        </View>
+                        <Input
+                            click_dis={true}
+                            called={false}
+                            onChangeText={(txt) => setAprice(txt)}
+                            name={'Afternoon Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
+                    </View>
+                    <View>
+                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Evening slot</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Input
+                                input={Eopen}
+                                editfalse={true}
+                                click={() => setactivebst('5')}
+                                called={false}
+                                name={'Open time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
+                            <Input
+                                input={Eclose}
+                                editfalse={true}
+                                click={() => setactivebst('6')}
+                                called={false}
+                                name={'Close time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
+                        </View>
+                        <Input
+                            click_dis={true}
+                            called={false}
+                            onChangeText={(txt) => setEprice(txt)}
+                            name={'Evening Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
+                    </View>
+                    <View>
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Night slot</Text>
                         <View style={{ flexDirection: 'row' }}>
-
-                            <Input input={Nopen} editfalse={true} click={() => setActivceAclick("7")} called={false} name={'Open time'} img={ImagePath.time} headerText={''} two={true} />
-                            <Input input={Nclose} editfalse={true} click={() => setActivceAclick("8")} called={false} name={'Close time'} img={ImagePath.time} headerText={''} two={true} />
+                            <Input
+                                input={Nopen}
+                                editfalse={true}
+                                click={() => setactivebst('7')}
+                                called={false}
+                                name={'Open time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
+                            <Input
+                                input={Nclose}
+                                editfalse={true}
+                                click={() => setactivebst('8')}
+                                called={false}
+                                name={'Close time'}
+                                img={ImagePath.time}
+                                headerText={''}
+                                two={true}
+                            />
                         </View>
-                        <Input called={false} onChangeText={handletxtChange} name={'Night Price'} img={ImagePath.rupee} headerText={''} two={true} />
+                        <Input
+                            click_dis={true}
+                            called={false}
+                            onChangeText={(txt) => setNprice(txt)}
+                            name={'Night Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
                     </View>
-
-
                 </View>
                 <View style={styles.btnview}>
-                    <TouchableOpacity style={styles.btn} >
+                    <TouchableOpacity style={styles.btn} onPress={() => check_back()}>
                         <Text style={styles.btntxt}>back</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(Routs.RulesScreen)}>
+                    <TouchableOpacity
+                        style={styles.btn}
+                        onPress={() => navigation.navigate(Routs.RulesScreen)}>
                         <Text style={styles.btntxt}>Next</Text>
                     </TouchableOpacity>
                 </View>
@@ -141,14 +271,17 @@ const TimeScreen = ({ navigation }) => {
                 />
             </ScrollView>
         </View>
-    )
-}
+    );
+};
 
-export default TimeScreen
+export default TimeScreen;
 
 const styles = StyleSheet.create({
     btnview: {
-        flexDirection: 'row', flex: 1, position: 'absolute', bottom: wp(5),
+        flexDirection: 'row',
+        flex: 1,
+        position: 'absolute',
+        bottom: wp(5),
     },
     btntxt: { color: '#fff', fontSize: wp(4) },
     btn: {
@@ -166,4 +299,4 @@ const styles = StyleSheet.create({
         fontSize: wp(5),
         fontWeight: 'bold',
     },
-})
+});

@@ -120,7 +120,7 @@ const RulesScreen = () => {
     }
     return (
         <View style={{ flex: 1 }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.titel}>Add your personal details</Text>
                 <Text style={{ marginStart: wp(4), marginTop: wp(3) }}>
                     Add Falicity and rules

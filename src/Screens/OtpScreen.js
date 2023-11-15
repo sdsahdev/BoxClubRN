@@ -11,16 +11,70 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 
-const OtpScreen = ({ navigation }) => {
-
+import * as APIS from '../APIS/Urls';
+import axios from 'axios';
+import { showMessage } from 'react-native-flash-message';
+const OtpScreen = ({ navigation, route }) => {
+    const { email } = route.params;
     const otpInputRefs = Array.from({ length: 4 }, () => useRef(null));
     const [isLoading, setIsLoading] = useState(false);
-    const [randomOTP, setrandomOTP] = useState(0)
+    const [ApiOtp, setApiOtp] = useState('')
     const [otp, setOtp] = useState('');
 
+    useEffect(() => {
+        send_API()
+    }, [])
+
+
+    const send_API = () => {
+
+        const datas = {
+            email: email
+        }
+
+        axios({
+            url: `${APIS.bASE_URL}${APIS.Send_Otp}`,
+            method: 'POST',
+            data: datas,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json', // Change to 'application/json'
+            }
+        })
+            .then(response => {
+                // setIsLoading(false)
+                if (response.data.success) {
+
+                    setApiOtp(response.data.otp)
+                    console.log(response.data.otp);
+                    return response.data.otp
+                }
+                showMessage({
+                    message: response.data.message,
+                    type: response.data.success ? 'success' : 'danger',
+                    backgroundColor: response.data.success ? "green" : 'red', // background color
+                    icon: response.data.success ? "success" : 'danger', // background color
+                    color: "#fff", // text color
+                });
+            })
+            .catch(error => {
+                showMessage({
+                    message: 'something went wrong',
+                    type: "danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                    icon: 'danger'
+                });
+                // setIsLoading(false)
+                console.error('Error:', error);
+            });
+
+    }
     const handleOtpChange = (index, text) => {
 
         const sanitizedText = text.replace(/[^0-9]/g, '').slice(0, 1);
+
+
         setOtp(prevOtp => {
             const newOtp = prevOtp.split('');
             newOtp[index] = sanitizedText;
@@ -38,11 +92,13 @@ const OtpScreen = ({ navigation }) => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         navigation.navigate(Routs.AdminRegister);
-        // console.log(otp, "==otp scere")
-        // if (randomOTP === otp) {
-        //     callApi();
+        // console.log(ApiOtp, ' ', otp);
+        // if (JSON.stringify(ApiOtp) === otp) {
+
+        //     navigation.navigate(Routs.AdminRegister);
+
         // } else {
         //     showMessage({
         //         message: "please enter valid otp",
@@ -51,7 +107,6 @@ const OtpScreen = ({ navigation }) => {
         //         color: '#fff', // text color
 
         //     });
-
         // }
 
     }
@@ -64,7 +119,7 @@ const OtpScreen = ({ navigation }) => {
 
                 <FastImage source={ImagePath.emailsent} style={{ height: '30%', width: '50%', alignSelf: 'center', }} resizeMode='center' />
                 <Text style={{ textAlign: 'center', margin: wp(4) }}>
-                    Enter the code we have sent you to the {'\n'}<Text style={{ color: Colors.blue }}> jamiedarren@gmail.com</Text>
+                    Enter the code we have sent you to the {'\n'}<Text style={{ color: Colors.blue }}>{email}</Text>
                 </Text>
                 <View style={styles.otpContainer}>
                     {Array.from({ length: 4 }).map((_, index) => (
@@ -80,7 +135,7 @@ const OtpScreen = ({ navigation }) => {
                     ))}
                 </View>
 
-                <TouchableOpacity onPress={() => wpmsg()}>
+                <TouchableOpacity onPress={() => send_API()}>
 
                     <Text style={{ alignSelf: 'center', marginTop: hp(2), }}>
                         Resend OTP
@@ -147,7 +202,7 @@ const styles = StyleSheet.create({
     input: {
         width: wp(15),
         height: hp(8),
-        borderColor: '#027850',
+        borderColor: Colors.sky,
         borderWidth: 1,
         marginHorizontal: 5,
         borderRadius: 8,

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, signal } from 'react'
 import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
@@ -13,6 +13,7 @@ import FlashMessage, {
     hideMessage,
     FlashMessageManager,
 } from 'react-native-flash-message';
+import axios from 'axios';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setemail] = useState('')
@@ -24,38 +25,49 @@ const LoginScreen = ({ navigation }) => {
         setpassword(text)
     }
     const loginApi = () => {
+
         const body_data = {
             email: email,
             password: password,
             type: 'login'
         }
+        console.log(body_data, "dtaa");
 
-        fetch(`${APIS.ADMIN_bASE_URL}${APIS.Login}`, {
+        axios({
+            url: `${APIS.ADMIN_bASE_URL}${APIS.Login}`,
             method: 'POST',
-            body: JSON.stringify(body_data),
+            data: body_data,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json', // Change to 'application/json'
+            }
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
+            .then(response => {
+                // setIsLoading(false)
+                console.log('Response:', response.data);
                 showMessage({
-                    message: data.message,
-                    type: "Success",
-                    backgroundColor: "green", // background color
+                    message: response.data.message,
+                    type: response.data.success ? 'success' : 'danger',
+                    backgroundColor: response.data.success ? "green" : 'red', // background color
+                    icon: response.data.success ? "success" : 'danger', // background color
                     color: "#fff", // text color
-
+                    onHide: () => {
+                        response.data.success && navigation.navigate(Routs.HomeScreen)
+                    }
                 });
             })
             .catch(error => {
-                console.error('Error sending SMS:', error);
-                // Handle error or display an error message to the user
                 showMessage({
-                    message: `fail` + error,
-                    type: "Success",
+                    message: 'something went wrong',
+                    type: "danger",
                     backgroundColor: "red", // background color
                     color: "#fff", // text color
-
+                    icon: 'danger'
                 });
+                // setIsLoading(false)
+                console.error('Error:', error);
             });
+
     }
     return (
         <View style={{ flex: 1 }}>
@@ -84,15 +96,15 @@ const LoginScreen = ({ navigation }) => {
 
 
                 <TouchableOpacity style={styles.btnstyle} onPress={() => {
-                    navigation.navigate(Routs.Registerscreen)
-                    // loginApi()
+                    // navigation.navigate(Routs.HomeScreen)
+                    loginApi()
                 }}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                         Login
                     </Text>
                 </TouchableOpacity>
                 <Text style={{ flex: 1, textAlign: 'center', marginTop: hp(3) }}>
-                    Don’t have an account? <Text style={styles.highight} onPress={() => navigation.navigate(Routs.OtpScreen)}>Sign Up</Text>
+                    Don’t have an account? <Text style={styles.highight} onPress={() => navigation.navigate(Routs.Registerscreen)}>Sign Up</Text>
                 </Text>
             </View>
             {/* </ImageBackground> */}

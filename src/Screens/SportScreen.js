@@ -22,10 +22,10 @@ const SportScreen = ({ navigation }) => {
 
     const data = [
         { id: 1, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 3, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 4, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 5, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 3, name: 'Table Tennis', image: ImagePath.tablete },
+        { id: 2, name: 'Golf', image: ImagePath.golf },
+        { id: 4, name: 'Football', image: ImagePath.footballplayer },
+        { id: 5, name: 'Vollyball', image: ImagePath.vollyball },
     ];
 
     const handleclick = (item) => {
@@ -58,9 +58,11 @@ const SportScreen = ({ navigation }) => {
                     source={item.image}
                     style={{
                         height: hp(15),
+                        width: wp(50),
+                        resizeMode: '',
                         backgroundColor: '#fff',
                         padding: wp(10),
-                        resizeMode: 'center',
+                        // resizeMode: 'center',
                         borderRadius: 10,
                         marginTop: hp(2),
                         borderColor: isFound ? 'red' : 'gray'
@@ -72,10 +74,10 @@ const SportScreen = ({ navigation }) => {
     };
     return (
         <View style={{ flex: 1 }}>
-            <Text style={styles.titel}>Add your personal details</Text>
-            <Text style={{ marginStart: wp(4), marginTop: wp(3) }}>
+            <Text style={styles.titel}>Select Available sport</Text>
+            {/* <Text style={{ marginStart: wp(4), marginTop: wp(3) }}>
                 Select Available sport
-            </Text>
+            </Text> */}
 
             <FlatList
                 data={data}

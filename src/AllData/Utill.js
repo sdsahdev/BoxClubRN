@@ -15,7 +15,18 @@ export const Strings = {
     ReNameKey: 'ReNameKey',
     RephoneKey: 'RephoneKey',
     RepasswordKey: 'RepasswordKey',
+    BoxNameKey: 'BoxNameKey',
+    BoxAddKey: 'BoxAddKey',
+    BoxLenthKey: 'BoxLenthKey',
+    BoxWidthKey: 'BoxWidthKey',
+    BoxheightKey: 'BoxheightKey',
+    BoxOpenKey: 'BoxOpenKey',
+    BoxCloseKey: 'BoxCloseKey',
+    BoxImageKey: 'BoxImageKey',
+
+    MOpenKey: 'BoxImageKey',
 };
+
 export const Routs = {
     BottomTabScreen: 'BottomTabScreen',
     CancelReqScreen: 'CancelReqScreen',
@@ -80,4 +91,11 @@ export const ImagePath = {
     headerbg: require('../../assets/Image/headerbg.png'),
     arrowdown: require('../../assets/Image/arrowdown.png'),
     loack: require('../../assets/Image/loack.png'),
+    upi: require('../../assets/Image/upi.png'),
+
+    vollyball: require('../../assets/Image/vollyball.jpg'),
+    tablete: require('../../assets/Image/tablete.jpg'),
+    football: require('../../assets/Image/football.jpg'),
+    golf: require('../../assets/Image/golf.jpg'),
+    footballplayer: require('../../assets/Image/footballplayer.gif'),
 }

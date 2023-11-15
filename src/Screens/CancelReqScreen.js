@@ -442,7 +442,7 @@ const CancelReqScreen = ({ navigation }) => {
     return (
         <View style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>
-                <ScrollView >
+                <ScrollView showsVerticalScrollIndicator={false}>
 
                     <View >
                         <TopHeader name={"Cancellation Request"} />

@@ -52,7 +52,7 @@ const ProfileScreen = ({ navigation }) => {
 
     return (
         <View style={{ position: 'relative', backgroundColor: '#eeeeee', height: '100%' }}>
-            <ScrollView style={{ marginBottom: hp(10) }}>
+            <ScrollView style={{ marginBottom: hp(10) }} showsVerticalScrollIndicator={false}>
                 <View >
                     <TopHeader name={"My Profile"} />
                 </View>

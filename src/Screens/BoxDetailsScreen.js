@@ -11,7 +11,7 @@ import Facilities from '../Commponent/Facilities';
 
 const BoxDetailsScreen = ({ navigation }) => {
     return (
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
 
             <View style={styles.imageContainer}>
                 <FastImage

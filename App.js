@@ -25,7 +25,7 @@ const App = () => {
   return (
 
     <NavigationContainer >
-      <Stack.Navigator screenOptions={{ headerMode: 'none' }} initialRouteName={Routs.LoginScreen}>
+      <Stack.Navigator screenOptions={{ headerMode: 'none' }} initialRouteName={Routs.AdminRegister}>
         <Stack.Screen name={Routs.BottomTabScreen} component={BottomTabScreen} />
         <Stack.Screen name={Routs.InboxScreen} component={InboxScreen} />
         <Stack.Screen name={Routs.EditBoxDScreen} component={EditBoxDScreen} />

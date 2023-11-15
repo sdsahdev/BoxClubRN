@@ -261,7 +261,7 @@ const DateTimeScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.mainView}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <TopHeader name={'Book Your Slot'} back={true} navigation={navigation} />
         </View>
