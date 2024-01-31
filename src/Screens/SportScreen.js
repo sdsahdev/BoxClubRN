@@ -15,11 +15,13 @@ import {
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
-
-const SportScreen = ({ navigation }) => {
-
-    const [selectSport, setselectSport] = useState([]);
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBoxRegister, setArrays } from '../../Redux/Slices/boxRegisterSlice';
+const SportScreen = ({ navigation, route }) => {
+    const { type } = route.params;
+    const dispatch = useDispatch();
+    const boxRegister = useSelector((state) => state.boxregister.boxRegister)
     const data = [
         { id: 1, name: 'Cricket', image: ImagePath.sportdata },
         { id: 3, name: 'Table Tennis', image: ImagePath.tablete },
@@ -28,30 +30,12 @@ const SportScreen = ({ navigation }) => {
         { id: 5, name: 'Vollyball', image: ImagePath.vollyball },
     ];
 
-    const handleclick = (item) => {
-
-        const check = selectSport.filter(i => item.id === i.id)
-        if (!check) {
-            selectSport.push[item.id]
-            console.log(selectSport, "==selectSport");
-        } else {
-            const updatedSelectSport = selectSport.filter(i => i.id !== item.id);
-            setselectSport(updatedSelectSport);
-            console.log(item.id, "==selectSport remove");
-        }
-
-    }
-
     const renderItem = ({ item, index }) => {
-        const isFound = selectSport.some(obj => obj.id == item.id)
+        const isFound = boxRegister.sports.some(obj => obj == item.name)
         return (
 
             <TouchableOpacity onPress={() => {
-                if (isFound) {
-                    setselectSport(selectSport.filter(i => i.id != item.id))
-                } else {
-                    setselectSport([...selectSport, item])
-                }
+                dispatch(setArrays({ fieldName: 'sports', text: item.name }));
             }} style={{ flex: 1, alignItems: 'center' }}>
 
                 <Image
@@ -59,14 +43,12 @@ const SportScreen = ({ navigation }) => {
                     style={{
                         height: hp(15),
                         width: wp(50),
-                        resizeMode: '',
                         backgroundColor: '#fff',
                         padding: wp(10),
-                        // resizeMode: 'center',
                         borderRadius: 10,
                         marginTop: hp(2),
-                        borderColor: isFound ? 'red' : 'gray'
-                        , borderWidth: 1,
+                        borderColor: isFound ? 'red' : 'gray',
+                        borderWidth: 1,
                     }}
                 />
             </TouchableOpacity>
@@ -86,12 +68,20 @@ const SportScreen = ({ navigation }) => {
                 numColumns={2}
             />
             <View style={styles.btnview}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(Routs.TimeScreen)}>
+
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.pop()}>
                     <Text style={styles.btntxt}>back</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn}>
+
+
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(Routs.TimeScreen, { type: type })}>
                     <Text style={styles.btntxt}>Next</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btn} onPress={() => console.log(boxRegister, "====love")}>
+                    <Text style={styles.btntxt}>check</Text>
+                </TouchableOpacity>
+
             </View>
         </View>
     );

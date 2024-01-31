@@ -5,6 +5,7 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import moment from 'moment';
+import { Colors } from '../AllData/Utill';
 
 const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor, data }) => {
 
@@ -61,13 +62,7 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor, data }) => {
     return (
         <View style={styles.container}>
 
-            <FlatList
-                style={{ flex: 1, alignSelf: 'center' }} // Set flex: 1 to occupy the remaining space
-                data={data}
-                numColumns={numColumns}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-            />
+
 
             <View
                 style={{
@@ -93,7 +88,16 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor, data }) => {
 
                     <Text style={styles.sold}>Selected</Text>
                 </View>
+
+
             </View>
+            <FlatList
+                style={{ flex: 1, alignSelf: 'center' }} // Set flex: 1 to occupy the remaining space
+                data={data}
+                numColumns={numColumns}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+            />
         </View>
     );
 };
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
     pxboxs: {
         width: wp(3),
         height: wp(3),
-        backgroundColor: '#027850',
+        backgroundColor: Colors.blue,
         marginHorizontal: wp(2),
         borderColor: '#000',
         borderWidth: 1,
@@ -145,7 +149,7 @@ const styles = StyleSheet.create({
     slotTxt: {
         color: '#000',
         borderWidth: wp(0.3),
-        borderColor: '#027850',
+        borderColor: Colors.blue,
         padding: wp(3),
         borderRadius: wp(2),
         fontSize: wp(4),
@@ -160,7 +164,7 @@ const styles = StyleSheet.create({
         borderRadius: wp(1.5),
         alignItems: 'center',
         borderWidth: wp(0.3),
-        borderColor: '#027850',
+        borderColor: Colors.blue,
         flexDirection: 'row',
     },
     calView: { marginTop: hp(10) },
@@ -180,15 +184,15 @@ const styles = StyleSheet.create({
     dateselect: {
         type: 'border',
         borderWidth: 0, // Adjust the borderWidth as desired
-        borderHighlightColor: '#027850',
+        borderHighlightColor: Colors.blue,
 
         // Add padding to create space between the border and content
     },
     hightname: {
-        color: '#027850',
+        color: Colors.blue,
         fontSize: wp(4),
     },
-    highDate: { color: '#027850', fontSize: wp(5) },
+    highDate: { color: Colors.blue, fontSize: wp(5) },
     datename: { color: 'grey', fontSize: wp(3.5) },
     numdate: { color: 'grey', fontSize: wp(3.5) },
     calheader: {
@@ -204,10 +208,10 @@ const styles = StyleSheet.create({
     container: { flex: 1, position: 'relative' },
     selectedDateText: { textAlign: 'center' },
     selectedItem: {
-        backgroundColor: 'green',
+        backgroundColor: Colors.blue,
     },
     selectedTimeSlot: {
-        backgroundColor: 'green',
+        backgroundColor: Colors.blue,
     },
 
 });

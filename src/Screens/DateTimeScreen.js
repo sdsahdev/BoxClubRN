@@ -17,14 +17,14 @@ import FlashMessage, {
 } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressLoader from 'rn-progress-loader';
-
 import TopHeader from '../Commponent/TopHeader';
 import CalanderFile from '../Commponent/CalanderFile';
 import SlotTime from '../Commponent/SlotTime';
+import { Colors } from '../AllData/Utill';
 
 const DateTimeScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const { item } = route.params;
+  const { item } = route.params;
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [caldate, setcalldat] = useState({});
@@ -92,7 +92,7 @@ const DateTimeScreen = ({ navigation, route }) => {
 
   const slotapi = (date) => {
     setIsLoading(true)
-    fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllSlots', {
+    fetch('https://boxclub.in/APIs/index.php?what=getSlot', {
       method: 'POST', // Assuming you want to use POST method
       headers: {
         'Content-Type': 'application/json',
@@ -104,20 +104,22 @@ const DateTimeScreen = ({ navigation, route }) => {
     })
       .then(response => response.json())
       .then((data, index) => {
+        // console.log(data.slots, "====dtaa");
+        console.log(item.id, "====dt");
         setIsLoading(false)
 
         // Create a new array of modified response objects
-        const modifiedResponse = Object.values(data).map((slot, index) => {
-          if (typeof slot === 'object' && slot.time) {
-            return {
-              ...slot,
-              id: index + 1
-            };
-          }
-          return slot;
+        const modifiedResponse = data.slots.map((slot, index) => {
+          // if (slot.time) {
+          return {
+            ...slot,
+            id: index + 1
+          };
+          // }
+          // return slot;
         });
-
-        setdatea6(Object.values(modifiedResponse))
+        console.log(modifiedResponse[0]);
+        setdatea6(modifiedResponse)
 
       })
       .catch(error => {
@@ -157,15 +159,18 @@ const DateTimeScreen = ({ navigation, route }) => {
 
   const csapi = () => {
     setIsLoading(true)
-    const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=checkMultipleSlot';
+    const apiUrl = 'https://boxclub.in/APIs/index.php?what=checkSlot';
 
     const requestData = {
       start_time: startTime,
       end_time: endTime,
       box_id: item.id,
-      dates: apidate,
-      type: 'multi'
+      // dates: apidate,
+      // type: 'multi'
     };
+
+
+
     fetch(`${apiUrl}`, {
       method: 'POST',
       headers: {
@@ -176,8 +181,9 @@ const DateTimeScreen = ({ navigation, route }) => {
       .then(response => response.json())
       .then(data => {
         setIsLoading(false)
-        //console.log('API response:', data);
+        console.log('API response:', data);
         if (data.success) {
+
           // BookingPro(data.price);
           bookm();
 
@@ -205,16 +211,17 @@ const DateTimeScreen = ({ navigation, route }) => {
     setIsLoading(true)
     const Token = await AsyncStorage.getItem('token');
 
-    const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=bookMultipleSlot';
+    const apiUrl = 'https://boxclub.in/APIs/Admin/index.php?what=bookSlot';
 
     const requestData = {
       start_time: startTime,
       end_time: endTime,
       box_id: item.id,
-      dates: apidate,
-      type: "multi",
+      // dates: apidate,
+      email: 'sahdevdomadiya7@gmail.com',
+      amount: "100"
+      // type: "multi",
       // payment_id: paymentid,
-      // amount: amounts
     };
     //console.log(requestData, "===res");
 
@@ -222,8 +229,7 @@ const DateTimeScreen = ({ navigation, route }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        token: Token
-
+        // token: Token
       },
       body: JSON.stringify(requestData),
     })
@@ -276,22 +282,11 @@ const DateTimeScreen = ({ navigation, route }) => {
 
           {
             Object.keys(caldate).length !== 0 && startTime !== null && (
-              isSuper === 'true' ? (
+              (
                 // Super admin: Show the "Book Now" button
                 <TouchableOpacity style={styles.btn} onPress={() => csapi()}>
                   <Text style={styles.payment}>Book Now</Text>
                 </TouchableOpacity>
-              ) : (
-                // Not a super admin: Check bookingrights
-                bookingrights === true ? (
-                  // User has booking rights: Show the "Book Now" button
-                  <TouchableOpacity style={styles.btn} onPress={() => csapi()}>
-                    <Text style={styles.payment}>Book Now</Text>
-                  </TouchableOpacity>
-                ) : (
-                  // User doesn't have booking rights: Show message
-                  <Text style={styles.message}>You are not allowed to book.</Text>
-                )
               )
             )
           }
@@ -308,7 +303,7 @@ const DateTimeScreen = ({ navigation, route }) => {
           visible={isLoading}
           isModal={true} isHUD={true}
           hudColor={"#fff"}
-          color={"#027850"} />
+          color={Colors.blue} />
       </ScrollView>
     </View>
   );
@@ -336,7 +331,7 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     borderRadius: 10,
-    backgroundColor: '#027850'
+    backgroundColor: Colors.blue
   },
   payment: {
     color: '#fff',

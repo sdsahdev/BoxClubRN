@@ -18,20 +18,57 @@ import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 // import ProgressLoader from 'rn-progress-loader';
 // import Input from '../Commponent/Input';
 // import CheckBox from 'react-native-check-box';
-
+import * as APIS from '../APIS/Urls'
+import axios from 'axios';
+import { showMessage } from 'react-native-flash-message';
+import { useSelector } from 'react-redux';
 
 const HomeScreen = ({ navigation }) => {
-    const data = [
-        { id: 1, name: 'Cricket', image: ImagePath.box1 },
-        { id: 1, name: 'Cricket', image: ImagePath.box2 },
-        { id: 1, name: 'Cricket', image: ImagePath.box3 },
-    ];
+    const user = useSelector((state) => state.LoginReducer.user)
+    const [data, setdata] = useState([])
 
+    useEffect(() => {
+        GetAdminBox()
+    }, []);
+
+
+
+    const GetAdminBox = async () => {
+
+        const body_data = {
+            email: user.email,
+        }
+        axios({
+            url: `${APIS.ADMIN_bASE_URL}${APIS.Admin_GET_BOX}`,
+            method: 'POST',
+            data: body_data,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json', // Change to 'application/json'
+            }
+        })
+            .then(response => {
+                // setIsLoading(false)
+                console.log('Response:', response.data.boxes);
+                setdata(response.data.boxes)
+            })
+            .catch(error => {
+                showMessage({
+                    message: 'something went wrong',
+                    type: "danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                    icon: 'danger'
+                });
+                // setIsLoading(false)
+                console.error('Error:', error);
+            });
+    }
     const renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ backgroundColor: '#fff', margin: wp(4), borderRadius: 6, padding: 10, }} onPress={() => navigation.navigate(Routs.BoxDetailsScreen)}>
+            <TouchableOpacity style={{ backgroundColor: '#fff', margin: wp(4), borderRadius: 6, padding: 10, }} onPress={() => navigation.navigate(Routs.BoxDetailsScreen, { item: item })}>
                 <FastImage
-                    source={item.image}
+                    source={{ uri: item.img1 }}
                     style={{
                         width: '90%',
                         height: hp(20),
@@ -39,7 +76,6 @@ const HomeScreen = ({ navigation }) => {
                         alignSelf: 'center',
                         margin: wp(4),
                         borderRadius: 8,
-
                     }}
                 />
                 <View
@@ -51,9 +87,9 @@ const HomeScreen = ({ navigation }) => {
                     }}>
                     <View style={{ flexDirection: 'column', flex: 1 }}>
                         <Text style={{ color: '#000', fontSize: wp(4.6) }}>
-                            Loote net box
+                            {item.name}
                         </Text>
-                        <Text>Athwalines,surat</Text>
+                        <Text>{item.address}</Text>
                     </View>
                     <View
                         style={{
@@ -62,8 +98,8 @@ const HomeScreen = ({ navigation }) => {
                             flexDirection: 'row',
                             justifyContent: 'flex-end',
                         }}>
-                        <Text style={{ color: Colors.blue, fontSize: wp(6) }}>₹600/</Text>
-                        <Text style={{ alignSelf: 'center', marginTop: 8 }}>hour</Text>
+                        <Text style={{ color: Colors.blue, fontSize: wp(6) }}>{item.morn_price}</Text>
+                        <Text style={{ alignSelf: 'center', marginTop: 8 }}>/hour</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -73,6 +109,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={{ flex: 1, backgroundColor: Colors.blue }}>
             <Image style={{ position: 'absolute', height: hp(17), width: '100%' }} source={ImagePath.homebg} />
+
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginTop: hp(4) }}>
 
                 <FastImage
@@ -93,6 +130,13 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.bottomview}>
                 <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false} style={{ padding: 5, marginBottom: hp(10) }} />
             </View>
+            <TouchableOpacity style={{ width: 50, height: 50, backgroundColor: Colors.blue, position: 'absolute', bottom: hp(12), borderRadius: 50, alignItems: 'center', right: wp(6) }}
+                onPress={() => navigation.navigate(Routs.AdminRegister, { type: "Add" })}>
+
+                <Text style={{ fontSize: 40, color: '#fff' }}>
+                    +
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 };

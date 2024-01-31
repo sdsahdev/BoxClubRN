@@ -4,7 +4,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { ImagePath } from '../AllData/Utill';
+import { Colors, ImagePath } from '../AllData/Utill';
 
 const SearchBar = ({ searchText, onChangeSearchText, press, filter }) => {
     return (
@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        borderColor: '#027850',
+        borderColor: Colors.blue,
         borderWidth: 1,
         borderRadius: 10,
         padding: 7,
 
     },
-    icon: { height: hp(3), width: hp(3), marginRight: wp(2), tintColor: '#027850' },
+    icon: { height: hp(3), width: hp(3), marginRight: wp(2), tintColor: Colors.blue },
     input: {
         width: '80%'
         // flex: 1,

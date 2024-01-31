@@ -21,61 +21,86 @@ import { useIsFocused } from '@react-navigation/native'; // Import the hook
 import ProgressLoader from 'rn-progress-loader';
 import TopHeader from '../Commponent/TopHeader';
 import SearchBar from '../Commponent/SearchBar';
-import { ImagePath } from '../AllData/Utill';
+import { Colors, ImagePath } from '../AllData/Utill';
+import * as APIS from '../APIS/Urls'
+import axios from 'axios';
 
 const InboxScreen = ({ navigation }) => {
     const [idata, setidata] = useState([])
-    const [searchText, setSearchText] = useState('');
     const [idata2, setidata2] = useState([]);
+
+    const [idataUser, setidataUser] = useState([])
+    const [idata2User, setidata2User] = useState([]);
+
+    const [searchText, setSearchText] = useState('');
     const [Visible, setVisible] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [SelectItems, setSelectItems] = useState("1");
     const isFocused = useIsFocused(); // Get the screen's focused state
     // useEffect(() => {
 
     //     handleAdminCheck();
     // }, [])
-    // useEffect(() => {
-    //     // Call the API when the component mounts
-    //     //console.log("+++++++");
-    //     inboxapi();
-    // }, [isFocused]);
+    useEffect(() => {
+        // Call the API when the component mounts
+        //console.log("+++++++");
+        inboxapi();
+    }, [isFocused]);
 
     const inboxapi = async () => {
         setIsLoading(true)
         const Token = await AsyncStorage.getItem('token');
 
-        fetch('https://boxclub.in/Joker/Admin/index.php?what=showInboxAdmin', {
-            method: 'POST', // Assuming you want to use POST method
+        const body_data = {
+            email: "sahdevdomadiya7@gmail.com",
+        }
+
+        axios({
+
+
+            url: `${APIS.ADMIN_bASE_URL}${APIS.Admin_INBOX}`,
+            method: 'POST',
+            data: body_data,
             headers: {
-                'Content-Type': 'application/json',
-                token: Token
-            },
+                Accept: 'application/json',
+                'Content-Type': 'application/json', // Change to 'application/json'
+            }
         })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => {
+                console.log(response.data);
                 setIsLoading(false)
-                // Handle the response data here
-                //console.log(data)
-                if (data.success) {
-                    setidata(data.bookings)
-                    setidata2(data.bookings)
+                if (response.data.success) {
 
-                } else {
-                    showMessage({
-                        message: data.message,
-                        type: "Danger",
-                        backgroundColor: "red", // background color
-                        color: "#fff", // text color
-                    });
+                    setidata(response.data.admin_booking)
+                    setidata2(response.data.admin_booking)
 
+                    setidata2User(response.data.user_booking)
+                    setidataUser(response.data.user_booking)
+                    // showMessage({
+                    //     message: "",
+                    //     type: response.data.success ? 'success' : 'danger',
+                    //     backgroundColor: response.data.success ? "green" : 'red', // background color
+                    //     icon: response.data.success ? "success" : 'danger', // background color
+                    //     color: "#fff", // text color
+
+                    // });
                 }
             })
             .catch(error => {
-
                 setIsLoading(false)
-                // Handle any errors here
+                showMessage({
+                    message: 'something went wrong',
+                    type: "danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                    icon: 'danger'
+                });
+                // setIsLoading(false)
                 console.error('Error:', error);
             });
+
+
+
     }
     const handleAdminCheck = async () => {
 
@@ -138,7 +163,7 @@ const InboxScreen = ({ navigation }) => {
     const handleSerach = e => {
         setSearchText(e)
         let text = e.toLowerCase();
-        let filteredData = idata2.filter(item => {
+        let filteredData = idata2User.filter(item => {
             return (
                 item.code.toLowerCase().match(text) ||
                 item.time.toLowerCase().match(text) ||
@@ -148,14 +173,13 @@ const InboxScreen = ({ navigation }) => {
                 item.message.toLowerCase().match(text)
             );
         });
-
         if (!text || text === '') {
             setSearchText('');
             inboxapi();
         } else if (!filteredData.length) {
             //console.log('no data');
         } else if (Array.isArray(filteredData)) {
-            setidata(filteredData);
+            setidataUser(filteredData);
         }
     };
 
@@ -164,13 +188,13 @@ const InboxScreen = ({ navigation }) => {
         setVisible(true)
     }
     const filterData = (keywork) => {
-        const filtered = idata2.filter(item => {
+        const filtered = idata2User.filter(item => {
             // Replace this condition with your own filtering logic
-            return item.message === keywork;
+            return item.status === keywork;
         });
 
-        setidata(filtered);
-        setVisible(false)
+        setidataUser(filtered);
+        setVisible(false);
     };
     const formatDateTime = (inputDateTime) => {
         const date = new Date(inputDateTime);
@@ -192,57 +216,57 @@ const InboxScreen = ({ navigation }) => {
     };
     const renderItem = ({ item }) => {
 
-        const bookingTime = formatDateTime(item.bookingTime)
+        // const bookingTime = formatDateTime(item.bookingTime)
 
-        const formattedDate = formatDate(item.date)
+        // const formattedDate = formatDate(item.date)
 
         return (
             <View style={styles.timeSlot}>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>code</Text>
-                    <Text style={[styles.textLeft, { color: 'red' }]}>{item.code}</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{item.id}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Username</Text>
-                    <Text style={styles.textLeft}>{item.username}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Phone</Text>
-                    <Text style={styles.textLeft}>{item.phone}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', }}>
 
                     <Text style={styles.textLeft}>Time</Text>
-                    <Text style={styles.textLeft}>{item.time}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Date</Text>
-                    <Text style={[styles.textLeft, { color: 'red' }]}>{formattedDate}</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{item.start_time}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>BoxName</Text>
-                    <Text style={styles.textLeft}>{item.BoxName}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Amount</Text>
-                    <Text style={styles.textLeft}>{item.amount}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Amount</Text>
-                    <Text style={styles.textLeft}>{bookingTime}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>message</Text>
-                    <Text style={styles.textLeft}>{item.message}</Text>
+                    <Text style={styles.textLeft}>{item.start_time}</Text>
                 </View>
                 {/* {item.message === 'booked' ?
                 <TouchableOpacity
@@ -261,16 +285,33 @@ const InboxScreen = ({ navigation }) => {
         <View style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-
                     <View >
                         <TopHeader name={"Inbox"} />
                     </View>
                     <SearchBar searchText={searchText} onChangeSearchText={handleSerach} press={() => handlemodal()} filter={true} />
 
                     <View style={{ marginRight: wp(9), width: '100%', marginBottom: hp(12) }}>
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={styles.btn}
+                                onPress={() => setSelectItems("1")}>
+                                <Text style={styles.payment}>
+                                    Admin side Booking
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.btn}
+                                onPress={() => setSelectItems("2")} >
+                                <Text style={styles.payment}>
+                                    User side Booking
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
                         <FlatList
                             style={{ marginTop: hp(1), alignSelf: 'center', width: '95%', }}
-                            data={idata}
+                            data={SelectItems === '1' ? idata : idataUser}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={item => item.id}
                             renderItem={renderItem}
@@ -296,17 +337,17 @@ const InboxScreen = ({ navigation }) => {
                                         <TouchableOpacity style={styles.mbtn} onPress={() => filterData("booked")} >
                                             <Text style={{ color: '#fff' }}>Booked</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.mbtn} onPress={() => filterData("cancel_request")} >
-                                            <Text style={{ color: '#fff' }}>Cancel Booking</Text>
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => filterData("cancel request")} >
+                                            <Text style={{ color: '#fff' }}>Cancel Request</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.mbtn} onPress={() => filterData("cancelled")} >
 
-                                            <Text style={{ color: '#fff' }}>Confirm Booking</Text>
+                                            <Text style={{ color: '#fff' }}>Cancelled</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            </TouchableWithoutFeedback >
-                        </Modal >
+                            </TouchableWithoutFeedback>
+                        </Modal>
                     </View>
 
                 </ScrollView>
@@ -316,15 +357,16 @@ const InboxScreen = ({ navigation }) => {
                 visible={isLoading}
                 isModal={true} isHUD={true}
                 hudColor={"#fff"}
-                color={"#027850"} />
+                color={Colors.blue} />
         </View>
     )
+
 }
 
 export default InboxScreen
 
 const styles = StyleSheet.create({
-    mbtn: { alignSelf: 'center', marginVertical: hp(0.5), backgroundColor: '#027850', padding: hp(2), borderRadius: 3, width: wp(40), alignItems: 'center' }
+    mbtn: { alignSelf: 'center', marginVertical: hp(0.5), backgroundColor: Colors.blue, padding: hp(2), borderRadius: 3, width: wp(40), alignItems: 'center' }
     , modalContent: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)'
@@ -341,14 +383,20 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     btn: { margin: wp(3), height: 40, flex: 1 },
-    payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
+    payment: { color: '#fff', backgroundColor: Colors.blue, flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(4), borderRadius: wp(2), },
     timeSlot: {
         marginVertical: wp(2),
         paddingHorizontal: wp(2),
-        borderWidth: wp(0.5), justifyContent: 'center'
-        , borderColor: '#027850',
+        borderWidth: wp(0.5),
+        justifyContent: 'center',
+        borderColor: Colors.blue,
         borderRadius: wp(2), paddingVertical: hp(1)
     }, textLeft: {
-        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap', marginVertical: wp(0.5), fontWeight: 'bold', fontSize: wp(4)
+        alignSelf: 'flex-start',
+        textAlignVertical: 'top',
+        verticalAlign: 'top',
+        justifyContent: 'flex-start',
+        flex: 1,
+        flexWrap: 'wrap', marginVertical: wp(0.5), fontWeight: 'bold', fontSize: wp(4)
     }
 })

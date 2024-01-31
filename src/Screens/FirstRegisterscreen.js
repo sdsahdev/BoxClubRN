@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
@@ -16,8 +16,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import SwipList from '../Commponent/SwipList';
 import axios from 'axios';
 
+import { AppContext } from '../Context/AppProvider';
 
-const Registerscreen = ({ navigation }) => {
+const FirstRegisterscreen = ({ navigation }) => {
+    const { TimeData, setTimeData } = useContext(AppContext)
+
     const [UserName, setuserName] = useState('')
     const [Password, setpassword] = useState('')
     const [conPassword, setconPassword] = useState('')
@@ -28,6 +31,36 @@ const Registerscreen = ({ navigation }) => {
     const [Companyname, setCompanyname] = useState('')
     const [isSlected, setisSelected] = useState(false);
     const [selectedImages, setSelectedImages] = useState();
+
+    useEffect(() => {
+        getStore()
+    }, []);
+
+    const getStore = async () => {
+        setuserName(await AsyncStorage.getItem(Strings.ReNameKey))
+        setEamil(await AsyncStorage.getItem(Strings.ReEmailKey))
+        setPhoneNumber(await AsyncStorage.getItem(Strings.RephoneKey))
+        setAddress(await AsyncStorage.getItem(Strings.ReAddressKey))
+        setUpi(await AsyncStorage.getItem(Strings.ReUpiKey))
+        setCompanyname(await AsyncStorage.getItem(Strings.ReCompanyKey))
+        setpassword(await AsyncStorage.getItem(Strings.RepasswordKey))
+        setconPassword(await AsyncStorage.getItem(Strings.ReCopasswordKey))
+        console.log(await AsyncStorage.getItem(Strings.ReEmailKey), "===emial");
+    }
+
+    const setStore = async () => {
+
+        await AsyncStorage.setItem(Strings.ReNameKey, UserName);
+        await AsyncStorage.setItem(Strings.ReEmailKey, Email);
+        await AsyncStorage.setItem(Strings.RephoneKey, PhoneNumber);
+        await AsyncStorage.setItem(Strings.ReAddressKey, Address);
+        await AsyncStorage.setItem(Strings.ReUpiKey, Upi);
+        await AsyncStorage.setItem(Strings.ReCompanyKey, Companyname);
+        await AsyncStorage.setItem(Strings.RepasswordKey, Password);
+        await AsyncStorage.setItem(Strings.ReCopasswordKey, conPassword);
+    }
+
+
 
     const Admin_registerAPI = () => {
         const formData = new FormData();
@@ -40,7 +73,7 @@ const Registerscreen = ({ navigation }) => {
         formData.append('id_proof', {
             uri: selectedImages.path,
             type: selectedImages.mime,
-            name: selectedImages.modificationDate, // You can change the file name if needed
+            name: selectedImages.modificationDate,
         });
         formData.append('upi', Upi);
         formData.append('company_name', Companyname);
@@ -63,7 +96,7 @@ const Registerscreen = ({ navigation }) => {
                     icon: response.data.success ? "success" : 'danger', // background color
                     color: "#fff", // text color
                     onHide: () => {
-                        response.data.success && navigation.navigate(Routs.OtpScreen)
+                        response.data.success && navigation.navigate(Routs.OtpScreen, { email: Email })
                     }
                 });
             })
@@ -80,6 +113,11 @@ const Registerscreen = ({ navigation }) => {
             });
     }
 
+    const handleContine = () => {
+        setStore()
+        // Admin_registerAPI()
+        navigation.navigate(Routs.OtpScreen, { email: Email })
+    }
 
     const openImagePicker = async () => {
         try {
@@ -93,49 +131,12 @@ const Registerscreen = ({ navigation }) => {
             console.log('ImagePicker Error: ' + e);
         }
     }
-    const rbtn = () => {
-        AsyncStorage.setItem(Strings.ReEmailKey, Email);
-        AsyncStorage.setItem(Strings.ReNameKey, userName);
-        AsyncStorage.setItem(Strings.RephoneKey, PhoneNumber);
-        AsyncStorage.setItem(Strings.RepasswordKey, password);
-        const body_data = {
-            email: Email
-        }
-        fetch(`${APIS.bASE_URL}${APIS.Send_Otp}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body_data),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                showMessage({
-                    message: `message send`,
-                    type: "Success",
-                    backgroundColor: "green", // background color
-                    color: "#fff", // text color
 
-                });
-            })
-            .catch(error => {
-                console.error('Error sending SMS:', error);
-                // Handle error or display an error message to the user
-                showMessage({
-                    message: `fail` + error,
-                    type: "Success",
-                    backgroundColor: "red", // background color
-                    color: "#fff", // text color
-
-                });
-            });
-    }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: '#f6f6f6f' }}>
             {/* <ImageBackground style={{ flex: 1 , backgroundColor:'#fff'}} source={ImagePath.bgmain} resizeMode="contain"> */}
-            <Image source={ImagePath.bgmain} resizeMode="center" style={styles.bgimage} />
+            <Image source={ImagePath.bgmain} resizeMode="stretch" style={styles.bgimage} />
             <ScrollView showsVerticalScrollIndicator={false} >
 
                 <View style={{ flex: 1, }}>
@@ -160,6 +161,7 @@ const Registerscreen = ({ navigation }) => {
                                 source={{
                                     uri: selectedImages.path
                                 }}
+
                                 style={styles.image}
                                 resizeMode='cover' />
                         </TouchableOpacity>
@@ -176,20 +178,21 @@ const Registerscreen = ({ navigation }) => {
                             <View >
 
                                 <FastImage source={ImagePath.Gallary} resizeMode='center' style={styles.gallimg} />
-                                <Text style={{ textAlign: 'center' }}>
+                                <Text style={{ textAlign: 'center', color: '#000' }}>
                                     Add box owner pancard photo
                                 </Text>
                             </View>
                         </TouchableOpacity>
                     }
-                    <Input called={false} onChangeText={(text) => setuserName(text)} name={'Name'} img={ImagePath.user} headerText={''} />
-                    <Input called={false} onChangeText={(text) => setEamil(text)} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
-                    <Input called={false} onChangeText={(text) => setPhoneNumber(text)} name={'Enter your phonenumber'} img={ImagePath.telephone} headerText={''} />
-                    <Input called={false} onChangeText={(text) => setAddress(text)} name={'Address'} img={ImagePath.home} headerText={''} />
-                    <Input called={false} onChangeText={(text) => setUpi(text)} name={'Upi id'} img={ImagePath.upi} headerText={''} />
-                    <Input called={false} onChangeText={(text) => setCompanyname(text)} name={'Company Name'} img={ImagePath.Boxname} headerText={''} />
-                    <Input called={false} onChangeText={(text) => setpassword(text)} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
-                    <Input called={false} onChangeText={(text) => setconPassword(text)} name={'Confirm your password'} img={ImagePath.loack} headerText={''} eye={true} />
+                    <Input defaults={UserName} click_dis={true} called={false} onChangeText={(text) => setuserName(text)} name={'Name'} img={ImagePath.user} headerText={''} />
+                    <Input defaults={Email} click_dis={true} called={false} onChangeText={(text) => setEamil(text)} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
+                    <Input defaults={PhoneNumber} click_dis={true} called={false} onChangeText={(text) => setPhoneNumber(text)} name={'Enter your phonenumber'} img={ImagePath.telephone} headerText={''} />
+                    <Input defaults={Address} click_dis={true} called={false} onChangeText={(text) => setAddress(text)} name={'Address'} img={ImagePath.home} headerText={''} />
+                    <Input defaults={Upi} click_dis={true} called={false} onChangeText={(text) => setUpi(text)} name={'Upi id'} img={ImagePath.upi} headerText={''} />
+                    <Input defaults={Companyname} click_dis={true} called={false} onChangeText={(text) => setCompanyname(text)} name={'Company Name'} img={ImagePath.Boxname} headerText={''} />
+                    <Input defaults={Password} click_dis={true} called={false} onChangeText={(text) => setpassword(text)} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
+                    <Input defaults={conPassword} click_dis={true} called={false} onChangeText={(text) => setconPassword(text)} name={'Confirm your password'} img={ImagePath.loack} headerText={''} eye={true} />
+
 
                     <View style={styles.checkview}>
 
@@ -199,35 +202,32 @@ const Registerscreen = ({ navigation }) => {
                             }}
                             isChecked={true}
                         />
-                        <Text style={{ fontSize: wp(4), flex: 1 }}>
+                        <Text style={{ fontSize: wp(4), flex: 1, color: '#000' }}>
                             I agree with all <Text style={styles.highight}> term & conditions </Text>and <Text style={styles.highight}>privacy polices.</Text>
                         </Text>
 
                     </View>
 
                     <TouchableOpacity style={styles.btnstyle} onPress={() =>
-                        // rbtn()
-                        // Admin_registerAPI()
-                        navigation.navigate(Routs.OtpScreen, { email: 'test@gmail.com' })
-
+                        handleContine()
                     }>
                         <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                             Sign Up
                         </Text>
                     </TouchableOpacity>
-                    <Text style={{ flex: 1, textAlign: 'center', marginVertical: hp(2.5), fontSize: wp(3.5) }}>
+                    <Text style={{ flex: 1, textAlign: 'center', marginVertical: hp(2.5), fontSize: wp(3.5), color: '#000' }}>
                         Already have an account? <Text style={styles.highight} onPress={() => navigation.navigate(Routs.LoginScreen)}>Login</Text>
                     </Text>
                 </View>
                 {/* </ImageBackground> */}
-            </ScrollView >
+            </ScrollView>
 
 
 
-        </View >
+        </View>
     )
 }
-export default Registerscreen;
+export default FirstRegisterscreen;
 
 
 const styles = StyleSheet.create({
@@ -237,10 +237,11 @@ const styles = StyleSheet.create({
     image: {
         width: wp(90),
         height: hp(23),
-        backgroundColor: '#000',
+        // backgroundColor: '#000',
         marginHorizontal: wp(1),
         borderRadius: wp(2),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,.1)'
     },
     bgimage: {
         flex: 1,
@@ -249,6 +250,10 @@ const styles = StyleSheet.create({
         height: '35%',
         bottom: 1,
         justifyContent: 'flex-end',
+        opacity: 0.4,
+        backgroundColor: '#f6f6f6f',
+        tintColor: '#f6f6f6f'
+        // backgroundColor: 'rgba(0,0.10,.10,.10)'
         // You can change this to 'contain' or other options as needed
     },
     imgstyle: {

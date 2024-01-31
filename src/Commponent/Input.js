@@ -33,6 +33,7 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two
                     <TextInput
                         editable={!editfalse}
                         selectTextOnFocus={!editfalse}
+                        placeholderTextColor={Colors.placeColor}
                         secureTextEntry={secure}
                         keyboardType={called ? 'phone-pad' : null}
                         placeholder={name}
@@ -98,6 +99,6 @@ const styles = StyleSheet.create({
         paddingLeft: wp(4),
         flexWrap: 'wrap',
         flex: 1,
-        fontSize: wp(4)
+        fontSize: wp(4),
     },
 });

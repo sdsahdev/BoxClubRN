@@ -8,7 +8,7 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import FastImage from 'react-native-fast-image';
 import {
     widthPercentageToDP as wp,
@@ -19,26 +19,63 @@ import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 import DatePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showMessage } from 'react-native-flash-message';
 
-const TimeScreen = ({ navigation }) => {
+
+import { AppContext } from '../Context/AppProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBoxRegister, setArrays } from '../../Redux/Slices/boxRegisterSlice';
+const TimeScreen = ({ navigation, route }) => {
+    const { TimeData, setTimeData } = useContext(AppContext)
+
+
+    const dispatch = useDispatch();
+    const boxRegister = useSelector((state) => state.boxregister.boxRegister)
+
+    const { type } = route.params;
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [activebt, setactivebt] = useState('');
 
-    const [Mopen, setMopen] = useState('');
-    const [Mclose, setMclose] = useState('');
-    const [Mprice, setMprice] = useState('');
-    const [Aopen, setAopen] = useState('');
-    const [Aclose, setAclose] = useState('');
-    const [Aprice, setAprice] = useState('');
-    const [Eopen, setEopen] = useState('');
-    const [Eclose, setEclose] = useState('');
-    const [Eprice, setEprice] = useState('');
-    const [Nopen, setNopen] = useState('');
-    const [Nclose, setNclose] = useState('');
-    const [Nprice, setNprice] = useState('');
+    // const [Mopen, setMopen] = useState('');
+    // const [Mclose, setMclose] = useState('');
+    // const [Mprice, setMprice] = useState('');
+    // const [SMprice, setSMprice] = useState('');
+    // const [Aopen, setAopen] = useState('');
+    // const [Aclose, setAclose] = useState('');
+    // const [Aprice, setAprice] = useState('');
+    // const [SAprice, setSAprice] = useState('');
+    // const [Eopen, setEopen] = useState('');
+    // const [Eclose, setEclose] = useState('');
+    // const [Eprice, setEprice] = useState('');
+    // const [SEprice, setSEprice] = useState('');
+
+    // const [TounamentPrice, setTounamentPrice] = useState('');
+    // const [STounamentPrice, setSTounamentPrice] = useState('');
+    const { EditBox } = useContext(AppContext)
+
+    useEffect(() => {
+        getStore(type);
+    }, []);
+
+    const handleInputChange = (fieldName, text) => {
+        dispatch(setBoxRegister({ fieldName, text }))
+        setTimeData(fieldName, text);
+        console.log(boxRegister, "========datasssssss");
+    };
+
+    const getStore = async (type) => {
+        if (type == "Edit") {
+            const item = EditBox;
+            setTimeData({
+                Mopen: item.morn_start_time, Mclose: item.morn_start_time, Mprice: item.morn_price, Aopen: item.after_start_time,
+                Aclose: item.after_end_time, Aprice: item.after_price, Eopen: item.night_start_time, Eclose: item.night_end_time, Eprice: item.night_price,
+                SMprice: item.ss_morning_price, SAprice: item.ss_afternoon_price, SEprice: item.ss_night_price, TounamentPrice: item.tournament_price, STounamentPrice: item.sunday_tournament_price
+            })
+        }
+    }
 
     const setactivebst = timeType => {
-
         console.log(`Opening time picker for: ${timeType}`, isDatePickerVisible);
         setactivebt(timeType);
         setDatePickerVisibility(true);
@@ -48,59 +85,48 @@ const TimeScreen = ({ navigation }) => {
         setDatePickerVisibility(false);
     };
 
-    const handleConfirm = date => {
-        const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm A');
+    const convertInsemple = (date) => {
+        const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm a');
+        console.log(date, "====> ", twelveHourFormat);
+        return twelveHourFormat;
+    }
 
+    const handleConfirm = date => {
+
+        setDatePickerVisibility(false);
+        console.log(date, "===");
+        const twelveHourFormat = moment(date).format('HH:mm:ss');
+        // const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm a');
+        // const updatedTimeData = { ...TimeData };
+        console.log(twelveHourFormat, "===s");
         switch (activebt) {
             case '1':
-                setMopen(twelveHourFormat);
+                handleInputChange('Mopen', twelveHourFormat)
                 break;
             case '2':
-                setMclose(twelveHourFormat);
-
+                handleInputChange('Mclose', twelveHourFormat)
                 break;
             case '3':
-                setAopen(twelveHourFormat);
-
+                handleInputChange('Aopen', twelveHourFormat)
                 break;
             case '4':
-                setAclose(twelveHourFormat);
-
+                handleInputChange('Aclose', twelveHourFormat)
                 break;
             case '5':
-                setEopen(twelveHourFormat);
+                handleInputChange('Eopen', twelveHourFormat)
                 break;
             case '6':
-                setEclose(twelveHourFormat);
-                break;
-            case '7':
-                setNopen(twelveHourFormat);
-
-                break;
-            case '8':
-                setNclose(twelveHourFormat);
-
+                handleInputChange('Eclose', twelveHourFormat)
                 break;
 
             default:
                 break;
         }
 
-        setDatePickerVisibility(false);
     };
     const check_back = () => {
-        console.log(Mprice, "mprive");
-        console.log(Aprice, "aprive");
-        console.log(Eprice, "eprive");
-        console.log(Nprice, "Nprice");
-        console.log(Mopen, "1");
-        console.log(Mclose, "2");
-        console.log(Aopen, "3");
-        console.log(Aclose, "4");
-        console.log(Eopen, "5");
-        console.log(Eclose, "6");
-        console.log(Nopen, "7");
-        console.log(Nclose, "8");
+
+        navigation.navigate(Routs.RulesScreen, { type: type })
 
     }
 
@@ -116,7 +142,7 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Morning slot</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Input
-                                input={Mopen}
+                                input={convertInsemple(TimeData.Mopen)}
                                 editfalse={true}
                                 click={() => setactivebst('1')}
                                 called={false}
@@ -124,10 +150,9 @@ const TimeScreen = ({ navigation }) => {
                                 img={ImagePath.time}
                                 headerText={''}
                                 two={true}
-
                             />
                             <Input
-                                input={Mclose}
+                                input={convertInsemple(TimeData.Mclose)}
                                 editfalse={true}
                                 click={() => setactivebst('2')}
                                 called={false}
@@ -138,10 +163,21 @@ const TimeScreen = ({ navigation }) => {
                             />
                         </View>
                         <Input
-                            called={false}
+                            defaults={TimeData.Mprice}
+                            called={true}
                             click_dis={true}
-                            onChangeText={(txt) => setMprice(txt)}
+                            onChangeText={(txt) => handleInputChange('Mprice', txt)}
                             name={'Moring Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
+                        <Input
+                            defaults={TimeData.SMprice}
+                            called={true}
+                            click_dis={true}
+                            onChangeText={(txt) => handleInputChange('SMprice', txt)}
+                            name={'Sunday Moring Price'}
                             img={ImagePath.rupee}
                             headerText={''}
                             two={true}
@@ -153,7 +189,7 @@ const TimeScreen = ({ navigation }) => {
                         </Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Input
-                                input={Aopen}
+                                input={convertInsemple(TimeData.Aopen)}
                                 editfalse={true}
                                 click={() => setactivebst('3')}
                                 called={false}
@@ -163,7 +199,7 @@ const TimeScreen = ({ navigation }) => {
                                 two={true}
                             />
                             <Input
-                                input={Aclose}
+                                input={convertInsemple(TimeData.Aclose)}
                                 editfalse={true}
                                 click={() => setactivebst('4')}
                                 called={false}
@@ -174,10 +210,21 @@ const TimeScreen = ({ navigation }) => {
                             />
                         </View>
                         <Input
+                            defaults={TimeData.Aprice}
                             click_dis={true}
-                            called={false}
-                            onChangeText={(txt) => setAprice(txt)}
+                            called={true}
+                            onChangeText={(txt) => handleInputChange('Aprice', txt)}
                             name={'Afternoon Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
+                        <Input
+                            defaults={TimeData.SAprice}
+                            click_dis={true}
+                            called={true}
+                            onChangeText={(txt) => handleInputChange('SAprice', txt)}
+                            name={'Sunday Afternoon Price'}
                             img={ImagePath.rupee}
                             headerText={''}
                             two={true}
@@ -187,7 +234,7 @@ const TimeScreen = ({ navigation }) => {
                         <Text style={[styles.titel, { fontSize: wp(4) }]}>Evening slot</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Input
-                                input={Eopen}
+                                input={convertInsemple(TimeData.Eopen)}
                                 editfalse={true}
                                 click={() => setactivebst('5')}
                                 called={false}
@@ -197,7 +244,7 @@ const TimeScreen = ({ navigation }) => {
                                 two={true}
                             />
                             <Input
-                                input={Eclose}
+                                input={convertInsemple(TimeData.Eclose)}
                                 editfalse={true}
                                 click={() => setactivebst('6')}
                                 called={false}
@@ -208,17 +255,49 @@ const TimeScreen = ({ navigation }) => {
                             />
                         </View>
                         <Input
+                            defaults={TimeData.Eprice}
                             click_dis={true}
-                            called={false}
-                            onChangeText={(txt) => setEprice(txt)}
+                            called={true}
+                            onChangeText={(txt) => handleInputChange('Eprice', txt)}
                             name={'Evening Price'}
                             img={ImagePath.rupee}
                             headerText={''}
                             two={true}
                         />
+                        <Input
+                            defaults={TimeData.SEprice}
+                            click_dis={true}
+                            called={true}
+                            onChangeText={(txt) => handleInputChange('SEprice', txt)}
+                            name={'Sunday Evening Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
+                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Tounament slot</Text>
+                        <Input
+                            defaults={TimeData.TounamentPrice}
+                            click_dis={true}
+                            called={true}
+                            onChangeText={(txt) => handleInputChange('TounamentPrice', txt)}
+                            name={'Tournament price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
+                        <Input
+                            defaults={TimeData.STounamentPrice}
+                            click_dis={true}
+                            called={true}
+                            onChangeText={(txt) => handleInputChange('STounamentPrice', txt)}
+                            name={'Sunday Tournament Price'}
+                            img={ImagePath.rupee}
+                            headerText={''}
+                            two={true}
+                        />
                     </View>
-                    <View>
-                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Night slot</Text>
+                    {/* <View>
+                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Sunday price</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Input
                                 input={Nopen}
@@ -250,16 +329,21 @@ const TimeScreen = ({ navigation }) => {
                             headerText={''}
                             two={true}
                         />
-                    </View>
+                    </View> */}
                 </View>
                 <View style={styles.btnview}>
-                    <TouchableOpacity style={styles.btn} onPress={() => check_back()}>
-                        <Text style={styles.btntxt}>back</Text>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.pop()}>
+                        <Text style={styles.btntxt}>Back</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.btn}
-                        onPress={() => navigation.navigate(Routs.RulesScreen)}>
+                        onPress={() => check_back()}>
                         <Text style={styles.btntxt}>Next</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.btn}
+                        onPress={() => console.log(boxRegister, "===data")}>
+                        <Text style={styles.btntxt}>check</Text>
                     </TouchableOpacity>
                 </View>
                 <DatePicker

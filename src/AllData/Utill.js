@@ -5,16 +5,23 @@ export const Colors = {
     background: '#F5F5F5',
     red: '#FF0000',
     sky: '#91c8f2',
+    placeColor: '#a5a8a5',
 };
 
 export const Strings = {
     Iagreewith: 'I agree with all term & conditions and privacy polices',
     loginButtonText: 'Login',
     signUpButtonText: 'Sign Up',
+
     ReEmailKey: 'ReEmailKey',
     ReNameKey: 'ReNameKey',
     RephoneKey: 'RephoneKey',
     RepasswordKey: 'RepasswordKey',
+    ReCopasswordKey: 'ReCopasswordKey',
+    ReAddressKey: 'ReAddressKey',
+    ReUpiKey: 'ReUpiKey',
+    ReCompanyKey: 'ReCompanyKey',
+
     BoxNameKey: 'BoxNameKey',
     BoxAddKey: 'BoxAddKey',
     BoxLenthKey: 'BoxLenthKey',
@@ -24,7 +31,30 @@ export const Strings = {
     BoxCloseKey: 'BoxCloseKey',
     BoxImageKey: 'BoxImageKey',
 
-    MOpenKey: 'BoxImageKey',
+
+    MOpenKey: 'MOpenKey',
+    MCloseKey: 'MCloseKey',
+    MPriceKey: 'MPriceKey',
+    AOpenKey: 'AOpenKey',
+    ACloseKey: 'ACloseKey',
+    APriceKey: 'APriceKey',
+    EOpenKey: 'EOpenKey',
+    ECloseKey: 'ECloseKey',
+    EPriceKey: 'EPriceKey',
+
+    SMPriceKey: 'SMPriceKey',
+    SAPriceKey: 'SAPriceKey',
+    SEPriceKey: 'SEPriceKey',
+
+    TournamentPriceKey: 'TournamentPriceKey',
+    STournamentPriceKey: 'STournamentPriceKey',
+
+    SportKey: 'SportKey',
+    FacilityKey: 'FacilityKey',
+    TermKey: 'TermKey',
+    AmountKey: 'AmountKey',
+
+    BoxItemKey: 'BoxItemKey',
 };
 
 export const Routs = {
@@ -47,6 +77,7 @@ export const Routs = {
 export const ImagePath = {
 
     bgmain: require('../../assets/Image/bgmain.png'),
+    // bgmain: require('../../assets/Image/Frame.jpg'),
     boll: require('../../assets/Image/boll.png'),
     mail: require('../../assets/Image/mail.png'),
     user: require('../../assets/Image/user.png'),

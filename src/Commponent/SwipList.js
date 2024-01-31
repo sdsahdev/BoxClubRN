@@ -25,7 +25,7 @@ const SwipList = ({ boxData }) => {
         flatListRef.current.scrollToOffset({ offset, animated: true });
         currentIndex = nextIndex;
       }
-    }, 3000); // Change the delay according to your needs
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [extractedImages]); // Listen for changes in boxData

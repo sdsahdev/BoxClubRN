@@ -14,6 +14,7 @@ import ProgressLoader from 'rn-progress-loader';
 import * as APIS from '../APIS/Urls';
 import axios from 'axios';
 import { showMessage } from 'react-native-flash-message';
+import TopHeader from '../Commponent/TopHeader';
 const OtpScreen = ({ navigation, route }) => {
     const { email } = route.params;
     const otpInputRefs = Array.from({ length: 4 }, () => useRef(null));
@@ -21,9 +22,9 @@ const OtpScreen = ({ navigation, route }) => {
     const [ApiOtp, setApiOtp] = useState('')
     const [otp, setOtp] = useState('');
 
-    useEffect(() => {
-        send_API()
-    }, [])
+    // useEffect(() => {
+    //     send_API()
+    // }, [])
 
 
     const send_API = () => {
@@ -93,7 +94,7 @@ const OtpScreen = ({ navigation, route }) => {
     };
 
     const handleSubmit = async () => {
-        navigation.navigate(Routs.AdminRegister);
+        navigation.navigate(Routs.AdminRegister, { type: "Add" });
         // console.log(ApiOtp, ' ', otp);
         // if (JSON.stringify(ApiOtp) === otp) {
 
@@ -112,13 +113,14 @@ const OtpScreen = ({ navigation, route }) => {
     }
     return (
         <View style={{ flex: 1 }}>
-            {/* <View style={{ position: 'absolute', width: '100%' }}>
-                <TopHeader name={"Otp"} />
-            </View> */}
+            <View style={{ position: 'absolute', width: '100%' }}>
+                <TopHeader name={"Otp Screen"} back={true} navigation={navigation} />
+            </View>
+
             <View style={{ borderRadius: wp(10), justifyContent: 'center', flex: 1, }}>
 
                 <FastImage source={ImagePath.emailsent} style={{ height: '30%', width: '50%', alignSelf: 'center', }} resizeMode='center' />
-                <Text style={{ textAlign: 'center', margin: wp(4) }}>
+                <Text style={{ textAlign: 'center', margin: wp(4), color: '#000' }}>
                     Enter the code we have sent you to the {'\n'}<Text style={{ color: Colors.blue }}>{email}</Text>
                 </Text>
                 <View style={styles.otpContainer}>
@@ -137,7 +139,7 @@ const OtpScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity onPress={() => send_API()}>
 
-                    <Text style={{ alignSelf: 'center', marginTop: hp(2), }}>
+                    <Text style={{ alignSelf: 'center', marginTop: hp(2), color: '#000' }}>
                         Resend OTP
                     </Text>
                 </TouchableOpacity>
@@ -152,7 +154,7 @@ const OtpScreen = ({ navigation, route }) => {
                 visible={isLoading}
                 isModal={true} isHUD={true}
                 hudColor={"#fff"}
-                color={"#027850"} />
+                color={Colors.blue} />
         </View>
     );
 }
@@ -209,6 +211,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontSize: wp(8),
         textAlign: 'center',
+        color: Colors.black
     },
     inputFocus: {
         borderColor: 'blue',

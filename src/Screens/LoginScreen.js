@@ -4,19 +4,18 @@ import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors, Strings, ImagePath, Routs } from '../AllData/Utill';
 import Input from '../Commponent/Input';
-import CheckBox from 'react-native-check-box'
-
 import ProgressLoader from 'rn-progress-loader';
-import * as APIS from '../APIS/Urls';
-import FlashMessage, {
+import {
     showMessage,
-    hideMessage,
-    FlashMessageManager,
 } from 'react-native-flash-message';
-import axios from 'axios';
+import { loginUser } from '../../Redux/Slices/LoginSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const LoginScreen = ({ navigation }) => {
-    const [email, setemail] = useState('')
+    const dispatch = useDispatch();
+    const { user, loading, error } = useSelector((state) => state.LoginReducer)
+
+    const [email, setemail] = useState('sahdevdomadiya7@gmail.com')
     const [password, setpassword] = useState('')
     const handletxtChange = (text) => {
         setemail(text)
@@ -24,55 +23,37 @@ const LoginScreen = ({ navigation }) => {
     const handlepasword = (text) => {
         setpassword(text)
     }
-    const loginApi = () => {
 
+    const loginApi = async () => {
         const body_data = {
             email: email,
             password: password,
             type: 'login'
         }
-        console.log(body_data, "dtaa");
-
-        axios({
-            url: `${APIS.ADMIN_bASE_URL}${APIS.Login}`,
-            method: 'POST',
-            data: body_data,
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json', // Change to 'application/json'
-            }
+        dispatch(loginUser(body_data)).then(() => {
+            navigation.navigate(Routs.BottomTabScreen)
         })
-            .then(response => {
-                // setIsLoading(false)
-                console.log('Response:', response.data);
+            .catch((error) => {
                 showMessage({
-                    message: response.data.message,
-                    type: response.data.success ? 'success' : 'danger',
-                    backgroundColor: response.data.success ? "green" : 'red', // background color
-                    icon: response.data.success ? "success" : 'danger', // background color
-                    color: "#fff", // text color
-                    onHide: () => {
-                        response.data.success && navigation.navigate(Routs.HomeScreen)
-                    }
-                });
-            })
-            .catch(error => {
-                showMessage({
-                    message: 'something went wrong',
+                    message: error?.message,
                     type: "danger",
-                    backgroundColor: "red", // background color
-                    color: "#fff", // text color
-                    icon: 'danger'
+                    backgroundColor: "red",
+                    color: "#fff",
+                    icon: 'danger',
                 });
-                // setIsLoading(false)
-                console.error('Error:', error);
-            });
+
+            });;
+
+
 
     }
     return (
         <View style={{ flex: 1 }}>
-            {/* <ImageBackground style={{ flex: 1 , backgroundColor:'#fff'}} source={ImagePath.bgmain} resizeMode="contain"> */}
-
+            <ProgressLoader
+                visible={loading}
+                isModal={true} isHUD={true}
+                hudColor={"#fff"}
+                color={Colors.blue} />
             <Image source={ImagePath.bgmain} resizeMode="center" style={styles.bgimage} />
             <View style={{ flex: 1, }}>
 
@@ -96,19 +77,16 @@ const LoginScreen = ({ navigation }) => {
 
 
                 <TouchableOpacity style={styles.btnstyle} onPress={() => {
-                    // navigation.navigate(Routs.HomeScreen)
                     loginApi()
                 }}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
                         Login
                     </Text>
                 </TouchableOpacity>
-                <Text style={{ flex: 1, textAlign: 'center', marginTop: hp(3) }}>
+                <Text style={{ flex: 1, textAlign: 'center', marginTop: hp(3), color: '#000' }}>
                     Don’t have an account? <Text style={styles.highight} onPress={() => navigation.navigate(Routs.Registerscreen)}>Sign Up</Text>
                 </Text>
             </View>
-            {/* </ImageBackground> */}
-
         </View>
     )
 }
@@ -123,7 +101,6 @@ const styles = StyleSheet.create({
         height: '35%',
         bottom: 1,
         justifyContent: 'flex-end',
-        // You can change this to 'contain' or other options as needed
     },
     imgstyle: {
         width: wp(14),

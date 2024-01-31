@@ -1,21 +1,29 @@
 import { StyleSheet, Text, ScrollView, View, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import FastImage from 'react-native-fast-image';
-import { Colors, ImagePath, Routs } from '../AllData/Utill';
+import { Colors, ImagePath, Routs, Strings } from '../AllData/Utill';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Titels from '../Commponent/Titels';
 import Facilities from '../Commponent/Facilities';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../Context/AppProvider';
 
-const BoxDetailsScreen = ({ navigation }) => {
+const BoxDetailsScreen = ({ navigation, route }) => {
+    const { setEditBox } = useContext(AppContext)
+    const { item } = route.params;
+    useEffect(() => {
+        console.log(item.id, "===details item");
+        setEditBox(item)
+        // AsyncStorage.setItem(Strings.BoxItemKey, JSON.stringify(item));
+    }, []);
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-
             <View style={styles.imageContainer}>
                 <FastImage
-                    source={ImagePath.box2}
+                    source={{ uri: item.img1 }}
                     style={styles.image}
                     resizeMode="stretch"
                 />
@@ -27,7 +35,7 @@ const BoxDetailsScreen = ({ navigation }) => {
                             resizeMode="cover"
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("EditBoxDScreen")}>
+                    <TouchableOpacity onPress={() => navigation.navigate(Routs.AdminRegister, { type: 'Edit' })}>
                         <FastImage
                             source={ImagePath.share}
                             style={styles.image2}
@@ -41,7 +49,8 @@ const BoxDetailsScreen = ({ navigation }) => {
                 style={styles.bottomView}>
                 <Titels text1={"titel"} text2={" ₹"} />
                 <Text style={{ marginVertical: wp(2), marginHorizontal: wp(4) }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et .Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et .
+                    {item.address}
+                    {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et .Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et . */}
                 </Text>
                 <Titels text1={"Available sports"} />
                 <Titels text1={"Location"} />
@@ -77,12 +86,11 @@ const BoxDetailsScreen = ({ navigation }) => {
 
                 <TouchableOpacity
                     style={styles.btn}
-                    onPress={() => navigation.navigate(Routs.DateTimeScreen)}>
+                    onPress={() => navigation.navigate(Routs.DateTimeScreen, { item: item })}>
                     <Text style={styles.payment}>Book You slot</Text>
                 </TouchableOpacity>
             </View>
-
-        </ScrollView >
+        </ScrollView>
     );
 };
 

@@ -8,7 +8,7 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import FastImage from 'react-native-fast-image';
 import {
     widthPercentageToDP as wp,
@@ -19,154 +19,372 @@ import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 import CheckBox from 'react-native-check-box'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import * as APIS from '../APIS/Urls';
+import { showMessage } from 'react-native-flash-message';
+import { AppContext } from '../Context/AppProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBoxRegister, setArrays, ruleChecked, addOneRule, AddListRule } from '../../Redux/Slices/boxRegisterSlice';
+const RulesScreen = ({ route }) => {
+    const dispatch = useDispatch();
+    const boxRegister = useSelector((state) => state.boxregister.boxRegister)
 
-const RulesScreen = () => {
+    const { TimeData, ReBoxFirst } = useContext(AppContext)
+    const { type } = route.params;
     const [addrule, setaddrule] = useState('');
     const [selectSport, setselectSport] = useState([]);
     const [selectterms, setselectterms] = useState([]);
+    const [terms, setterms] = useState([]);
 
 
     const data = [
-        { id: 1, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 2, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 3, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 4, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 5, name: 'Cricket', image: ImagePath.sportdata },
-        { id: 6, name: 'Cricket', image: ImagePath.sportdata },
+        { id: 1, name: 'Water' },
+        { id: 2, name: 'Bat' },
+        { id: 3, name: 'Ball' },
+        { id: 4, name: 'Parking' },
+        { id: 5, name: 'Locker' },
+        { id: 6, name: 'Food' },
     ];
+    const Get_all_data = async () => {
+        // AsyncStorage.setItem(Strings.BoxNameKey, BoxName)
+        // AsyncStorage.setItem(Strings.BoxAddKey, Address)
+        // AsyncStorage.setItem(Strings.BoxOpenKey, OpenTime)
+        // AsyncStorage.setItem(Strings.BoxCloseKey, CloseTime)
+        // AsyncStorage.setItem(Strings.MOpenKey, Mopen)
+        // AsyncStorage.setItem(Strings.MCloseKey, Mclose)
+        // AsyncStorage.setItem(Strings.MPriceKey, Mprice)
+        // AsyncStorage.setItem(Strings.AOpenKey, Aopen)
+        // AsyncStorage.setItem(Strings.ACloseKey, Aclose)
+        // AsyncStorage.setItem(Strings.APriceKey, Aprice)
+        // AsyncStorage.setItem(Strings.EOpenKey, Eopen)
+        // AsyncStorage.setItem(Strings.ECloseKey, Eclose)
+        // AsyncStorage.setItem(Strings.EPriceKey, Eprice)
+        // AsyncStorage.setItem(Strings.SportKey, sportNames)
+        // rules
+        // AsyncStorage.setItem(Strings.TournamentPriceKey, TounamentPrice)
+        // AsyncStorage.setItem(Strings.FacilityKey, TounamentPrice)
+        // AsyncStorage.setItem(Strings.TermKey, termDescriptions)
+        // AsyncStorage.setItem(Strings.SMPriceKey, SMprice)
+        // AsyncStorage.setItem(Strings.SAPriceKey, SAprice)
+        // AsyncStorage.setItem(Strings.SEPriceKey, SEprice)
+        // AsyncStorage.setItem(Strings.STournamentPriceKey, STounamentPrice)
+        // //size below
+        // AsyncStorage.setItem(Strings.BoxLenthKey, Lenght)
+        // AsyncStorage.setItem(Strings.BoxWidthKey, Width)
+        // AsyncStorage.setItem(Strings.BoxheightKey, Height)
+        // AsyncStorage.setItem(Strings.BoxImageKey, JSON.stringify(selectedImages))
+        // AsyncStorage.setItem(Strings.ReEmailKey, email)
+        // //transaction id
+        // AsyncStorage.setItem(Strings.AmountKey, amount)
 
-    const Rule = [
-        { id: 1, description: 'The Primary function of this facility is to serve the recreational, educational, wellness and sports needs of the users.' },
-        { id: 2, description: 'Organized activities, events, tournaments, etc. in the field must have a reservation and confirmed payment.' },
-        { id: 3, description: 'GOG Multi-sports turf do not assume liability for property loss, theft or any injuries resulting from any activity, event or coaching.' },
-        { id: 4, description: 'Possession or Consumption of alcoholic beverages, public intoxication is prohibited in the facility.' },
-        { id: 5, description: 'Smoking, chewing tobacco & chewing gum is prohibited.' },
-        { id: 6, description: 'Individuals or organizations cannot conduct commercial operations at the venue without prior consent.' },
-        { id: 7, description: 'Management reserves the right to inspect any bag for the prohibited items.' },
-        { id: 8, description: 'This premise is monitored by security cameras for your safety.' },
-        { id: 9, description: 'Boots with Metal studs are prohibited.' },
-        { id: 11, description: 'The Management reserves the right to evict any individual for any offensive, violent, abusive, discriminatory behavior of any kind shown towards any of the staff as well as other customers.' },
-        { id: 12, description: 'All customers are to leave the pitch/ground once their time slot has been completed.' },
-        { id: 13, description: 'Not more than 14 players at a time on field/ground. More than 14 players on filed will be considered an event and event charges will be applicable.' },
-        { id: 14, description: 'Outside food and Beverages not permissible.' },
-        { id: 15, description: 'Right of admission reserved.' },
-        { id: 16, description: 'Children under the age of 10 years must be accompanied by a guardian (16 years or over) at all times.' },
-    ];
-    const [terms, setterms] = useState([]);
+        // const boxName = await AsyncStorage.getItem(Strings.BoxNameKey);
+        // const boxAdd = await AsyncStorage.getItem(Strings.BoxAddKey);
+        // const boxOpen = await AsyncStorage.getItem(Strings.BoxOpenKey);
+        // const boxClose = await AsyncStorage.getItem(Strings.BoxCloseKey);
+        // const mOpen = await AsyncStorage.getItem(Strings.MOpenKey);
+        // const mClose = await AsyncStorage.getItem(Strings.MCloseKey);
+        // const mPrice = await AsyncStorage.getItem(Strings.MPriceKey);
+        // const aOpen = await AsyncStorage.getItem(Strings.AOpenKey);
+        // const aClose = await AsyncStorage.getItem(Strings.ACloseKey);
+        // const aPrice = await AsyncStorage.getItem(Strings.APriceKey);
+        // const eOpen = await AsyncStorage.getItem(Strings.EOpenKey);
+        // const eClose = await AsyncStorage.getItem(Strings.ECloseKey);
+        // const ePrice = await AsyncStorage.getItem(Strings.EPriceKey);
+        // const sportNames = await AsyncStorage.getItem(Strings.SportKey);
+        // // rules
+        // const tournamentPrice = await AsyncStorage.getItem(Strings.TournamentPriceKey);
+        // const facility = await AsyncStorage.getItem(Strings.FacilityKey);
+        // const termDescriptions = await AsyncStorage.getItem(Strings.TermKey);
+        // const smPrice = await AsyncStorage.getItem(Strings.SMPriceKey);
+        // const saPrice = await AsyncStorage.getItem(Strings.SAPriceKey);
+        // const sePrice = await AsyncStorage.getItem(Strings.SEPriceKey);
+        // const stournamentPrice = await AsyncStorage.getItem(Strings.STournamentPriceKey);
+        // // size below
+        // const boxLength = await AsyncStorage.getItem(Strings.BoxLenthKey);
+        // const boxWidth = await AsyncStorage.getItem(Strings.BoxWidthKey);
+        // const boxHeight = await AsyncStorage.getItem(Strings.BoxheightKey);
+        // const boxImage = await AsyncStorage.getItem(Strings.BoxImageKey);
+        // const reEmail = await AsyncStorage.getItem(Strings.ReEmailKey);
+        // // transaction id
+        // const amount = await AsyncStorage.getItem(Strings.AmountKey);
 
-    useEffect(() => { setterms(Rule) }, [])
+
+        // const keys = [
+        //     Strings.BoxNameKey,
+        //     Strings.BoxAddKey,
+        //     Strings.BoxOpenKey,
+        //     Strings.BoxCloseKey,
+        //     Strings.MOpenKey,
+        //     Strings.MCloseKey,
+        //     Strings.MPriceKey,
+        //     Strings.AOpenKey,
+        //     Strings.ACloseKey,
+        //     Strings.APriceKey,
+        //     Strings.EOpenKey,
+        //     Strings.ECloseKey,
+        //     Strings.EPriceKey,
+        //     Strings.SportKey,
+        //     Strings.TournamentPriceKey,
+        //     Strings.FacilityKey,
+        //     Strings.TermKey,
+        //     Strings.SMPriceKey,
+        //     Strings.SAPriceKey,
+        //     Strings.SEPriceKey,
+        //     Strings.STournamentPriceKey,
+        //     Strings.BoxLenthKey,
+        //     Strings.BoxWidthKey,
+        //     Strings.BoxheightKey,
+        //     Strings.BoxImageKey,
+        //     Strings.ReEmailKey,
+        //     Strings.AmountKey,
+        // ];
+
+        // for (const key of keys) {
+        //     const value = await AsyncStorage.getItem(key);
+        //     console.log(`${key}:`, value);
+        // }
+
+        // register box
+        // const boxName = await AsyncStorage.getItem(Strings.BoxNameKey);
+        // const boxAdd = await AsyncStorage.getItem(Strings.BoxAddKey);
+        // const boxOpen = await AsyncStorage.getItem(Strings.BoxOpenKey);
+        // const boxClose = await AsyncStorage.getItem(Strings.BoxCloseKey);
+        // size below
+        // const boxLength = await AsyncStorage.getItem(Strings.BoxLenthKey);
+        // const boxWidth = await AsyncStorage.getItem(Strings.BoxWidthKey);
+        // const boxHeight = await AsyncStorage.getItem(Strings.BoxheightKey);
+        // const boxImage = await AsyncStorage.getItem(Strings.BoxImageKey);
+        // const reEmail = await AsyncStorage.getItem(Strings.ReEmailKey);
+        // TounamentPrice: '', STounamentPrice:'' '
+
+        //timeing
+        // const mOpen = TimeData.Mopen;
+        // const mClose = TimeData.Mclose;
+        // const mPrice = TimeData.Mprice;
+        // const aOpen = TimeData.Aopen;
+        // const aClose = TimeData.Aclose;
+        // const aPrice = TimeData.Aprice;
+        // const eOpen = TimeData.Eopen;
+        // const eClose = TimeData.Eclose;
+        // const ePrice = TimeData.Eprice;
+        // const smPrice = TimeData.SMprice;
+        // const saPrice = TimeData.SAprice;
+        // const sePrice = TimeData.SEprice;
+        // const tournamentPrice = TimeData.TounamentPrice;
+        // const stournamentPrice = TimeData.STounamentPrice;
+
+        // console.log(selectSport, "===selected sport");
+        // console.log(selectterms, "====selected terms");
+        // console.log(terms, "====temrms");
+        // rules
+        // const sportNames = await AsyncStorage.getItem(Strings.SportKey);
+        // const facility = await AsyncStorage.getItem(Strings.FacilityKey);
+        // const termDescriptions = await AsyncStorage.getItem(Strings.TermKey);
+
+        // transaction id
+        // const amount = await AsyncStorage.getItem(Strings.AmountKey);
+        const formData = new FormData();
+        formData.append('name', boxName);
+        formData.append('address', boxAdd);
+        formData.append('box_open_time', boxOpen);
+        formData.append('box_close_time', boxClose);
+        formData.append('morn_start_time', mOpen);
+        formData.append('morn_end_time', mClose);
+        formData.append('morn_price', mPrice);
+        formData.append('after_start_time', aOpen);
+        formData.append('after_end_time', aClose);
+        formData.append('after_price', aPrice);
+        formData.append('even_start_time', eOpen);
+        formData.append('even_end_time', eClose);
+        formData.append('even_price', ePrice);
+        formData.append('sports', sportNames);
+        formData.append('box_rules', facility);
+        formData.append('tournament_price', tournamentPrice);
+        formData.append('facility', facility);
+        formData.append('terms', termDescriptions);
+        formData.append('ss_morning_price', smPrice);
+        formData.append('ss_afternoon_price', saPrice);
+        formData.append('ss_evening_price', sePrice);
+        formData.append('ss_night_price', '3500');
+        formData.append('sunday_tournament_price', stournamentPrice);
+        formData.append('size', boxLength);
+        formData.append('transaction_id', '0000');
+        formData.append('amount', '500');
+        formData.append('email', "sahdevdomadiya7@gmail.com");
+        // formData.append('img1', reEmail);
+        // formData.append('img2', reEmail);
+        // formData.append('img3', reEmail);
+
+        console.log(ReBoxFirst.selectedImages);
+        ReBoxFirst.selectedImages.forEach((image, index) => {
+            const fileName = `img${index + 1}.jpg`; // Provide a unique name for each image
+            formData.append(`img${index + 1}`, {
+                uri: image.uri,
+                type: image.type,
+                name: fileName,
+            });
+        });
+
+        console.log(formData);
+
+        // axios({
+        //     url: `${APIS.ADMIN_bASE_URL}${APIS.ADD_BOX}`,
+        //     method: 'POST',
+        //     data: formData,
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'multipart/form-data',
+        //     }
+        // })
+        //     .then(response => {
+        //         // setIsLoading(false)
+        //         console.log('Response:', response.data);
+        //         showMessage({
+        //             message: response.data.message,
+        //             type: response.data.success ? 'success' : 'danger',
+        //             backgroundColor: response.data.success ? "green" : 'red', // background color
+        //             icon: response.data.success ? "success" : 'danger', // background color
+        //             color: "#fff", // text color
+        //             onHide: () => {
+        //                 // response.data.success && navigation.navigate(Routs.OtpScreen)
+        //             }
+        //         });
+        //     })
+        //     .catch(error => {
+        //         showMessage({
+        //             message: 'something went wrong',
+        //             type: "danger",
+        //             backgroundColor: "red", // background color
+        //             color: "#fff", // text color
+        //             icon: 'danger'
+        //         });
+        //         // setIsLoading(false)
+        //         console.error('Error:', error);
+        //     });
+
+    }
+
 
     const handletxtChange = (txt) => {
-        // console.log(txt);
-
         setaddrule(txt)
-
-        // setaddrule(selectterms.length)
-
     };
-
+    const handleAddTodo = () => {
+        if (addrule.trim() !== '') {
+            dispatch(addOneRule(addrule));
+            setaddrule('');
+        }
+    };
     const renderItem = ({ item, index }) => {
 
-        const isFound = selectSport.some(obj => obj.id == item.id)
+        const isFound = boxRegister.fecilities.some(obj => obj == item.name)
         return (
 
-            <KeyboardAwareScrollView style={{ flex: 1, marginHorizontal: wp(3), marginVertical: hp(1) }}>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (isFound) {
-                            setselectSport(selectSport.filter(i => i.id != item.id))
-                        } else {
-                            setselectSport([...selectSport, item])
-                        }
-                    }}
-                    style={{
-                        borderColor: isFound ? Colors.blue : Colors.sky,
-                        borderWidth: isFound ? 3 : 1,
-                        flex: 1,
-                        padding: wp(2),
-                        borderRadius: 8,
-                        alignItems: 'center',
+            <TouchableOpacity
+                onPress={() => {
+                    dispatch(setArrays({ fieldName: 'fecilities', text: item.name }));
 
-                    }}
-                >
-                    <Text style={{ color: '#000' }}>{item.name}</Text>
-                </TouchableOpacity>
-            </KeyboardAwareScrollView>
+                }}
+                style={{
+                    borderColor: isFound ? Colors.blue : Colors.sky,
+                    borderWidth: isFound ? 3 : 1,
+                    flex: 1,
+                    padding: wp(2),
+                    borderRadius: 8,
+                    alignItems: 'center',
+                    margin: wp(2)
+
+                }}
+            >
+                <Text style={{ color: '#000' }}>{item.name}</Text>
+            </TouchableOpacity>
 
         );
     };
     const rulesData = ({ item, index }) => {
-
-        const isFound = data.length == 0 ? false : selectterms.some(obj => obj.id == item.id)
-        // console.log(item, '====termsss');
         return (
             <View style={styles.checkview}>
 
                 <CheckBox
                     style={{ marginHorizontal: wp(2) }}
-                    onClick={() => {
-                        if (isFound) {
-                            setselectterms(selectterms.filter(i => i.id != item.id))
-                        } else {
-                            setselectterms([...selectterms, item])
-                        }
-                    }}
-                    isChecked={isFound ? true : false}
+                    onClick={() => dispatch(ruleChecked(item.id))}
+                    isChecked={item.check}
                 />
                 <Text style={{ fontSize: wp(4), color: '#000', flex: 1 }}>
                     {item.description}</Text>
             </View>
         )
     }
+
     return (
-        <View style={{ flex: 1 }}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Text style={styles.titel}>Add your personal details</Text>
-                <Text style={{ marginStart: wp(4), marginTop: wp(3) }}>
-                    Add Falicity and rules
-                </Text>
-                <Text style={[styles.titel, { fontSize: wp(4) }]}>Facilities</Text>
+        <KeyboardAwareScrollView
+            enableOnAndroid={true}
+            extraHeight={130}
+            extraScrollHeight={130}
+            contentContainerStyle={{ flexGrow: 1 }} >
+
+            <View style={{ flex: 1 }}>
+
+                <Text style={styles.titel}>Add Falicity and rules</Text>
+
+                <Text style={[styles.titel, { fontSize: wp(4) }]}>Select Facilities</Text>
                 <FlatList
                     data={data}
                     renderItem={renderItem}
                     numColumns={3}
                 />
-                {/* <TouchableOpacity style={styles.btnstyle} onPress={() => console.log(selectterms, "===terms")}>
-                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4) }}>
-                        + Add Facilities
-                    </Text>
-                </TouchableOpacity> */}
-                <Text style={[styles.titel, { fontSize: wp(4) }]}>Rules</Text>
+
+                <Text style={[styles.titel, { fontSize: wp(4) }]}>Select Rules</Text>
                 <FlatList
-                    // contentContainerStyle={{ padding: hp(2) }}
-                    data={terms}
+                    data={boxRegister.termsAll}
                     renderItem={rulesData}
                 />
                 <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: hp(2) }}>
                     <Text style={{ fontSize: wp(8), color: '#000', marginStart: wp(9), alignSelf: 'center' }}>
                         +
                     </Text>
+
                     <Input called={false} onChangeText={handletxtChange} name={'Enter your Rules'} headerText={''} eye={false} two={true} img={ImagePath.Locaker} defaults={addrule} />
                 </View>
-
-                <TouchableOpacity style={[styles.btnstyle, { marginBottom: 1 }]} onPress={() => {
-                    setterms([...terms, { id: terms.length + 2, description: addrule }]),
-                        setaddrule('')
-                }}>
+                <TouchableOpacity style={[styles.btnstyle, { marginBottom: 1 }]} onPress={handleAddTodo}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4), }}>
                         Add Rules
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnstyle} onPress={() => {
-                    setterms([...terms, { id: terms.length + 2, description: addrule }]),
-                        setaddrule('')
-                }}>
+
+                {/* <TouchableOpacity style={styles.btnstyle} onPress={() => {
+                    // console.log(addrule, "==adds")
+                    if (addrule != '') {
+                        setterms([...terms, { id: terms.length + 2, description: addrule }])
+                        console.log(addrule, "==adds")
+                    }
+                    Get_all_data()
+                }}
+                >
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4), }}>
                         Register
                     </Text>
+                </TouchableOpacity> */}
+
+                <TouchableOpacity style={styles.btnstyle} onPress={() => {
+                    console.log(boxRegister, "===checl all daat");
+                    console.log(boxRegister.termsAll, "===checl all termsAll");
+                    const textArray = boxRegister.termsAll
+                        .filter((todo) => todo.check)
+                        .map((todo) => todo.description);
+                    console.log(textArray, "===checl all termsAll");
+                    const newDescriptions = ["break time", "tea time", "sleep time"];
+
+                    // Dispatch the action to add new todos
+                    dispatch(AddListRule(newDescriptions));
+                }}>
+                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4), }}>
+                        check
+                    </Text>
                 </TouchableOpacity>
-            </ScrollView>
-        </View>
+            </View>
+
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -194,3 +412,4 @@ const styles = StyleSheet.create({
 
     }
 });
+

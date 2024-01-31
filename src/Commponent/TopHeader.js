@@ -23,8 +23,8 @@ const TopHeader = ({ name, back, navigation }) => {
                 ) : null
                 }
                 <Text style={styles.headetxt}>{name}</Text>
-            </View >
-        </View >
+            </View>
+        </View>
     );
 };
 export default TopHeader;
