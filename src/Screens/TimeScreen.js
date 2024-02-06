@@ -19,41 +19,17 @@ import ProgressLoader from 'rn-progress-loader';
 import Input from '../Commponent/Input';
 import DatePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { showMessage } from 'react-native-flash-message';
-
-
 import { AppContext } from '../Context/AppProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoxRegister, setArrays } from '../../Redux/Slices/boxRegisterSlice';
 const TimeScreen = ({ navigation, route }) => {
-    const { TimeData, setTimeData } = useContext(AppContext)
-
-
+    const {  setTimeData ,EditBox} = useContext(AppContext)
     const dispatch = useDispatch();
-    const boxRegister = useSelector((state) => state.boxregister.boxRegister)
+    const TimeData = useSelector((state) => state.boxregister.boxRegister)
 
     const { type } = route.params;
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [activebt, setactivebt] = useState('');
-
-    // const [Mopen, setMopen] = useState('');
-    // const [Mclose, setMclose] = useState('');
-    // const [Mprice, setMprice] = useState('');
-    // const [SMprice, setSMprice] = useState('');
-    // const [Aopen, setAopen] = useState('');
-    // const [Aclose, setAclose] = useState('');
-    // const [Aprice, setAprice] = useState('');
-    // const [SAprice, setSAprice] = useState('');
-    // const [Eopen, setEopen] = useState('');
-    // const [Eclose, setEclose] = useState('');
-    // const [Eprice, setEprice] = useState('');
-    // const [SEprice, setSEprice] = useState('');
-
-    // const [TounamentPrice, setTounamentPrice] = useState('');
-    // const [STounamentPrice, setSTounamentPrice] = useState('');
-    const { EditBox } = useContext(AppContext)
-
     useEffect(() => {
         getStore(type);
     }, []);
@@ -61,7 +37,6 @@ const TimeScreen = ({ navigation, route }) => {
     const handleInputChange = (fieldName, text) => {
         dispatch(setBoxRegister({ fieldName, text }))
         setTimeData(fieldName, text);
-        console.log(boxRegister, "========datasssssss");
     };
 
     const getStore = async (type) => {
@@ -86,9 +61,8 @@ const TimeScreen = ({ navigation, route }) => {
     };
 
     const convertInsemple = (date) => {
-        const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm a');
-        console.log(date, "====> ", twelveHourFormat);
-        return twelveHourFormat;
+        const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm a')
+        return twelveHourFormat == 'Invalid date' ? '' :twelveHourFormat;
     }
 
     const handleConfirm = date => {
@@ -96,9 +70,6 @@ const TimeScreen = ({ navigation, route }) => {
         setDatePickerVisibility(false);
         console.log(date, "===");
         const twelveHourFormat = moment(date).format('HH:mm:ss');
-        // const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm a');
-        // const updatedTimeData = { ...TimeData };
-        console.log(twelveHourFormat, "===s");
         switch (activebt) {
             case '1':
                 handleInputChange('Mopen', twelveHourFormat)
@@ -296,40 +267,6 @@ const TimeScreen = ({ navigation, route }) => {
                             two={true}
                         />
                     </View>
-                    {/* <View>
-                        <Text style={[styles.titel, { fontSize: wp(4) }]}>Sunday price</Text>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Input
-                                input={Nopen}
-                                editfalse={true}
-                                click={() => setactivebst('7')}
-                                called={false}
-                                name={'Open time'}
-                                img={ImagePath.time}
-                                headerText={''}
-                                two={true}
-                            />
-                            <Input
-                                input={Nclose}
-                                editfalse={true}
-                                click={() => setactivebst('8')}
-                                called={false}
-                                name={'Close time'}
-                                img={ImagePath.time}
-                                headerText={''}
-                                two={true}
-                            />
-                        </View>
-                        <Input
-                            click_dis={true}
-                            called={false}
-                            onChangeText={(txt) => setNprice(txt)}
-                            name={'Night Price'}
-                            img={ImagePath.rupee}
-                            headerText={''}
-                            two={true}
-                        />
-                    </View> */}
                 </View>
                 <View style={styles.btnview}>
                     <TouchableOpacity style={styles.btn} onPress={() => navigation.pop()}>
@@ -340,11 +277,11 @@ const TimeScreen = ({ navigation, route }) => {
                         onPress={() => check_back()}>
                         <Text style={styles.btntxt}>Next</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.btn}
-                        onPress={() => console.log(boxRegister, "===data")}>
+                        onPress={() => console.log(TimeData, "===data")}>
                         <Text style={styles.btntxt}>check</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <DatePicker
                     isVisible={isDatePickerVisible}

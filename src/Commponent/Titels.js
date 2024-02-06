@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native'
 import React from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-const Titels = ({ text1, text2, boolian }) => {
+const Titels = ({ text1, text2 }) => {
     return (
 
         <View style={styles.TitelView}>
@@ -9,8 +9,8 @@ const Titels = ({ text1, text2, boolian }) => {
             <Text style={{
                 width: 'auto',
                 height: 'auto',
-                fontSize: boolian ? 13 : 18,
-                color: !boolian ? "#000" : null
+                fontSize:18,
+                color:  "#000",
             }}>{text1}</Text>
             <Text style={styles.textStyle2}>{text2}</Text>
         </View>
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
 
         width: 'auto',
         height: 'auto',
-        // fontSize: boolian ? 13 : 18,
-        // color: !boolian ? "#000" : null
+       
+      
 
     },
     textStyle2: {

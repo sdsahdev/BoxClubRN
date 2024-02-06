@@ -168,9 +168,6 @@ const DateTimeScreen = ({ navigation, route }) => {
       // dates: apidate,
       // type: 'multi'
     };
-
-
-
     fetch(`${apiUrl}`, {
       method: 'POST',
       headers: {
@@ -218,7 +215,7 @@ const DateTimeScreen = ({ navigation, route }) => {
       end_time: endTime,
       box_id: item.id,
       // dates: apidate,
-      email: 'sahdevdomadiya7@gmail.com',
+      email: 'sahdevdomadiya8@gmail.com',
       amount: "100"
       // type: "multi",
       // payment_id: paymentid,
@@ -267,7 +264,7 @@ const DateTimeScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.mainView}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} >
         <View>
           <TopHeader name={'Book Your Slot'} back={true} navigation={navigation} />
         </View>
@@ -292,13 +289,11 @@ const DateTimeScreen = ({ navigation, route }) => {
           }
 
         </View>
-        <View style={styles.sendView}>
           <SlotTime
             onStartTimeChange={(e) => setStartTime(e)}
             onEndTimeChange={(e) => setEndTime(e)}
             tor={handletor}
             data={data} />
-        </View>
         <ProgressLoader
           visible={isLoading}
           isModal={true} isHUD={true}
@@ -312,17 +307,15 @@ export default DateTimeScreen;
 
 const styles = StyleSheet.create({
   datess: { alignSelf: 'center', color: '#f97272', marginVertical: hp(1) },
-
   sold: { color: '#000' },
   thiView: { marginHorizontal: wp(10), },
   sendView: {
-    flexWrap: 'wrap',
-    flex: 1,
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: hp(2),
+ 
   },
-  mainView: { flex: 1, marginBottom: hp(5) },
+  mainView: { flex: 1},
   btn: {
     marginHorizontal: wp(4),
     marginTop: hp(2),

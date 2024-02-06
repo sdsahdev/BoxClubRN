@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     FlatList,
     Image,
-    ScrollView,
+
 } from 'react-native';
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import FastImage from 'react-native-fast-image';
@@ -25,18 +25,16 @@ import * as APIS from '../APIS/Urls';
 import { showMessage } from 'react-native-flash-message';
 import { AppContext } from '../Context/AppProvider';
 import { useDispatch, useSelector } from 'react-redux';
+import { ScrollView } from 'react-native-virtualized-view';
+import mime from 'mime';
+
 import { setBoxRegister, setArrays, ruleChecked, addOneRule, AddListRule } from '../../Redux/Slices/boxRegisterSlice';
 const RulesScreen = ({ route }) => {
     const dispatch = useDispatch();
     const boxRegister = useSelector((state) => state.boxregister.boxRegister)
-
-    const { TimeData, ReBoxFirst } = useContext(AppContext)
+    const user = useSelector((state) => state.LoginReducer.user)
     const { type } = route.params;
     const [addrule, setaddrule] = useState('');
-    const [selectSport, setselectSport] = useState([]);
-    const [selectterms, setselectterms] = useState([]);
-    const [terms, setterms] = useState([]);
-
 
     const data = [
         { id: 1, name: 'Water' },
@@ -46,6 +44,7 @@ const RulesScreen = ({ route }) => {
         { id: 5, name: 'Locker' },
         { id: 6, name: 'Food' },
     ];
+
     const Get_all_data = async () => {
         // AsyncStorage.setItem(Strings.BoxNameKey, BoxName)
         // AsyncStorage.setItem(Strings.BoxAddKey, Address)
@@ -184,85 +183,92 @@ const RulesScreen = ({ route }) => {
 
         // transaction id
         // const amount = await AsyncStorage.getItem(Strings.AmountKey);
+        const rulearray = boxRegister.termsAll.filter((item) => item.check).map(i => i.description)
+
         const formData = new FormData();
-        formData.append('name', boxName);
-        formData.append('address', boxAdd);
-        formData.append('box_open_time', boxOpen);
-        formData.append('box_close_time', boxClose);
-        formData.append('morn_start_time', mOpen);
-        formData.append('morn_end_time', mClose);
-        formData.append('morn_price', mPrice);
-        formData.append('after_start_time', aOpen);
-        formData.append('after_end_time', aClose);
-        formData.append('after_price', aPrice);
-        formData.append('even_start_time', eOpen);
-        formData.append('even_end_time', eClose);
-        formData.append('even_price', ePrice);
-        formData.append('sports', sportNames);
-        formData.append('box_rules', facility);
-        formData.append('tournament_price', tournamentPrice);
-        formData.append('facility', facility);
-        formData.append('terms', termDescriptions);
-        formData.append('ss_morning_price', smPrice);
-        formData.append('ss_afternoon_price', saPrice);
-        formData.append('ss_evening_price', sePrice);
-        formData.append('ss_night_price', '3500');
-        formData.append('sunday_tournament_price', stournamentPrice);
-        formData.append('size', boxLength);
+        formData.append('name', boxRegister.BoxName);
+        formData.append('address', boxRegister.Address);
+        formData.append('box_open_time', boxRegister.OpenTime);
+        formData.append('box_close_time', boxRegister.CloseTime);
+        formData.append('morn_start_time', boxRegister.Mopen);
+        formData.append('morn_end_time', boxRegister.Mclose);
+        formData.append('morn_price', boxRegister.Mprice);
+        formData.append('after_start_time', boxRegister.Aopen);
+        formData.append('after_end_time', boxRegister.Aclose);
+        formData.append('after_price', boxRegister.Aprice);
+        formData.append('even_start_time', boxRegister.Eopen);
+        formData.append('even_end_time', boxRegister.Eclose);
+        formData.append('even_price', boxRegister.Eprice);
+        formData.append('sports', boxRegister.sports);
+        formData.append('box_rules', rulearray);
+        formData.append('tournament_price', boxRegister.TounamentPrice);
+        formData.append('facility', boxRegister.fecilities);
+        formData.append('terms', rulearray);
+        formData.append('ss_morning_price', boxRegister.SMprice);
+        formData.append('ss_afternoon_price', boxRegister.SAprice);
+        formData.append('ss_evening_price', boxRegister.SEprice);
+        formData.append('ss_night_price', '0000');
+        formData.append('sunday_tournament_price', boxRegister.STounamentPrice);
+        formData.append('Lenght', boxRegister.Lenght);
+        formData.append('Width',boxRegister.Width);
+        formData.append('Height',boxRegister.Height);
         formData.append('transaction_id', '0000');
         formData.append('amount', '500');
-        formData.append('email', "sahdevdomadiya7@gmail.com");
-        // formData.append('img1', reEmail);
-        // formData.append('img2', reEmail);
-        // formData.append('img3', reEmail);
-
-        console.log(ReBoxFirst.selectedImages);
-        ReBoxFirst.selectedImages.forEach((image, index) => {
-            const fileName = `img${index + 1}.jpg`; // Provide a unique name for each image
+        formData.append('email', 'sahdevdomadiya9@gmail.com');
+        
+        
+        boxRegister.images.forEach((image, index) => {
+            const newImageUri = "file:///" + image.split("file:/").join("");
+            
+            const typefile = image.split('.').pop();
             formData.append(`img${index + 1}`, {
-                uri: image.uri,
-                type: image.type,
-                name: fileName,
+                uri: newImageUri,
+                type: mime.getType(newImageUri),
+                name: image.split("/").pop(),
             });
         });
-
-        console.log(formData);
-
-        // axios({
-        //     url: `${APIS.ADMIN_bASE_URL}${APIS.ADD_BOX}`,
-        //     method: 'POST',
-        //     data: formData,
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'multipart/form-data',
-        //     }
-        // })
-        //     .then(response => {
-        //         // setIsLoading(false)
-        //         console.log('Response:', response.data);
-        //         showMessage({
-        //             message: response.data.message,
-        //             type: response.data.success ? 'success' : 'danger',
-        //             backgroundColor: response.data.success ? "green" : 'red', // background color
-        //             icon: response.data.success ? "success" : 'danger', // background color
-        //             color: "#fff", // text color
-        //             onHide: () => {
-        //                 // response.data.success && navigation.navigate(Routs.OtpScreen)
-        //             }
-        //         });
-        //     })
-        //     .catch(error => {
-        //         showMessage({
-        //             message: 'something went wrong',
-        //             type: "danger",
-        //             backgroundColor: "red", // background color
-        //             color: "#fff", // text color
-        //             icon: 'danger'
-        //         });
-        //         // setIsLoading(false)
-        //         console.error('Error:', error);
-        //     });
-
+        console.log(type, "==type ");
+        if(type == "Edit"){
+            formData.append('updateImage',boxRegister.updateimage == true ? "yes" : "no" );
+            console.log("==updatediamge => ",boxRegister.updateimage == true ? "yes" : "no");
+            formData.append('operation',"updateBox" );
+            formData.append('box_id',boxRegister.id );
+        }
+        return
+        axios({
+            url: `${APIS.ADMIN_bASE_URL}${APIS.ADD_BOX}`,
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+            .then(response => {
+                // setIsLoading(false)
+                console.log('Response:', response?.data);
+                showMessage({
+                    message: response?.data?.message,
+                    type: response.data.success ? 'success' : 'danger',
+                    backgroundColor: response.data.success ? "green" : 'red', // background color
+                    icon: response.data.success ? "success" : 'danger', // background color
+                    color: "#fff", // text color
+                    onHide: () => {
+                        // response.data.success && navigation.navigate(Routs.OtpScreen)
+                    }
+                });
+            })
+            .catch(error => {
+                showMessage({
+                    message: 'something went wrong',
+                    type: "danger",
+                    backgroundColor: "red",
+                    color: "#fff",
+                    icon: 'danger'
+                });
+                // setIsLoading(false)
+                console.error('Error:', error);
+            });
     }
 
 
@@ -352,34 +358,13 @@ const RulesScreen = ({ route }) => {
                     </Text>
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.btnstyle} onPress={() => {
+                <TouchableOpacity style={styles.btnstyle} onPress={() => {
                     // console.log(addrule, "==adds")
-                    if (addrule != '') {
-                        setterms([...terms, { id: terms.length + 2, description: addrule }])
-                        console.log(addrule, "==adds")
-                    }
                     Get_all_data()
                 }}
                 >
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4), }}>
                         Register
-                    </Text>
-                </TouchableOpacity> */}
-
-                <TouchableOpacity style={styles.btnstyle} onPress={() => {
-                    console.log(boxRegister, "===checl all daat");
-                    console.log(boxRegister.termsAll, "===checl all termsAll");
-                    const textArray = boxRegister.termsAll
-                        .filter((todo) => todo.check)
-                        .map((todo) => todo.description);
-                    console.log(textArray, "===checl all termsAll");
-                    const newDescriptions = ["break time", "tea time", "sleep time"];
-
-                    // Dispatch the action to add new todos
-                    dispatch(AddListRule(newDescriptions));
-                }}>
-                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: wp(4), }}>
-                        check
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -412,4 +397,3 @@ const styles = StyleSheet.create({
 
     }
 });
-

@@ -4,16 +4,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import FastImage from 'react-native-fast-image';
 
 const SwipeUrl = ({ boxData }) => {
-    console.log(boxData, "--box");
+
     const flatListRef = useRef(null);
     const extractedImages = boxData;
-    // if (boxData.length > 0) {
-    //     for (let i = 0; i < boxData.length; i++) {
-    //         console.log(boxData[i].path, "---parth");
-    //         extractedImages.push(boxData[i].path);
-    //     }
-    //     // }
-    // }
 
     useEffect(() => {
         let currentIndex = 0;
@@ -32,12 +25,12 @@ const SwipeUrl = ({ boxData }) => {
 
     const renderItem = ({ item, index }) => {
 
-        console.log(item, "=== ", index);
         return (
             <View style={styles.imageContainer}>
                 <FastImage
                     source={{
-                        uri: item, priority: FastImage.priority.high,
+                        uri: item, 
+                        priority: FastImage.priority.high,
                     }} style={styles.image} resizeMode='cover' />
             </View>
         );

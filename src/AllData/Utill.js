@@ -6,6 +6,8 @@ export const Colors = {
     red: '#FF0000',
     sky: '#91c8f2',
     placeColor: '#a5a8a5',
+not_availe: '#0F2167',
+booking_slelect: 'rgba(99,141,239,1)',
 };
 
 export const Strings = {

@@ -38,5 +38,5 @@ const styles = StyleSheet.create({
         marginRight: wp(2),
         tintColor: Colors.blue
     },
-    txt: { alignSelf: 'center', textAlign: 'center' },
+    txt: { alignSelf: 'center', textAlign: 'center', color:'black' },
 });
