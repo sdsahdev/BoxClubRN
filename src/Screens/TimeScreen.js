@@ -30,25 +30,13 @@ const TimeScreen = ({ navigation, route }) => {
     const { type } = route.params;
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [activebt, setactivebt] = useState('');
-    useEffect(() => {
-        getStore(type);
-    }, []);
 
     const handleInputChange = (fieldName, text) => {
         dispatch(setBoxRegister({ fieldName, text }))
         setTimeData(fieldName, text);
     };
 
-    const getStore = async (type) => {
-        if (type == "Edit") {
-            const item = EditBox;
-            setTimeData({
-                Mopen: item.morn_start_time, Mclose: item.morn_start_time, Mprice: item.morn_price, Aopen: item.after_start_time,
-                Aclose: item.after_end_time, Aprice: item.after_price, Eopen: item.night_start_time, Eclose: item.night_end_time, Eprice: item.night_price,
-                SMprice: item.ss_morning_price, SAprice: item.ss_afternoon_price, SEprice: item.ss_night_price, TounamentPrice: item.tournament_price, STounamentPrice: item.sunday_tournament_price
-            })
-        }
-    }
+
 
     const setactivebst = timeType => {
         console.log(`Opening time picker for: ${timeType}`, isDatePickerVisible);

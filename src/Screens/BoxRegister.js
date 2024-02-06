@@ -50,45 +50,7 @@ const BoxRegister = ({ navigation, route }) => {
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
-    useEffect(() => {
-        getStore(type);
-    }, []);
-
-    const getStore = async (type) => {
-
-        // if (type == "Edit") {
-
-        //     const item = EditBox;
-
-        //     handleReboxFirest({
-        //         BoxName: item.name,
-        //         Address: item.address,
-        //         Lenght: '', Width: '', Height: '',
-        //         OpenTime: item.box_open_time,
-        //         CloseTime: item.box_close_time
-        //     })
-
-
-            //     // const parsedItem = await AsyncStorage.getItem(Strings.BoxItemKey)
-            //     // const item = JSON.parse(parsedItem);
-            //     console.log(EditBox, "=====Edit box");
-            //     // setItem(item)
-            //     setisSelected(true);
-            //     setUrlShows('true')
-            //     setBoxName(item.name)
-            //     setAddress(item.address)
-            //     // setLenght(item.))
-            //     // setWidth(await AsyncStorage.getItem(Strings.BoxWidthKey))
-            //     // setHeight(await AsyncStorage.getItem(Strings.BoxheightKey))
-            //     setOpenTime(item.box_open_time)
-            //     setCloseTime(item.box_close_time)
-            // showImagesUrl.push(item.img1)
-            // showImagesUrl.push(item.img2)
-            // showImagesUrl.push(item.img3)
-            //     console.log(item, "type");
-        // }
-
-    }
+ 
     const handleConfirm = date => {
         // const twelveHourFormat = moment(date, "HH:mm").format("hh:mm A");
         const twelveHourFormat = moment(date).format('HH:mm:ss');

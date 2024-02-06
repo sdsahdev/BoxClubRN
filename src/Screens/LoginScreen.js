@@ -23,23 +23,6 @@ const LoginScreen = ({ navigation }) => {
     const handlepasword = (text) => {
         setpassword(text)
     }
-const testAPi =  ()=> {
-  fetch('http://13.234.112.36:8080/api/v1/user/get-block', {
-        headers: {
-            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YWx1ZSI6eyJtb2JpbGUiOiIrOTE5OTExNzA3NDc0Iiwicm9sZSI6IlVzZXIiLCJfaWQiOiI2MzZjYWY4ZDc4NDQ1NjJhMTg3ZmQxNDUiLCJwYWlkIjpmYWxzZX0sImlhdCI6MTcwNjg2ODczMCwiZXhwIjoxNzM4NDA0NzMwfQ.YICGvhhS9-Go1IOCmS7Cz343zXbVhzHKXB1di2NkLVc'
-        }
-    })
-        .then(response => response.json())
-        .then(res => {
-            console.log(res, "===")
-            // const blockedProfile = res.data.data.blockUser;
-            // setblockUsers(Object.values(blockedProfile));
-        })
-        .catch(er => {
-            console.error(er)
-            console.log(er);
-        });
-}
     const loginApi = async () => {
         const body_data = {
             email: email,
