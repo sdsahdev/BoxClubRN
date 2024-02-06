@@ -28,23 +28,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SwipeUrl from '../Commponent/SwipeUrl';
 import { AppContext } from '../Context/AppProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBoxRegister } from '../../Redux/Slices/boxRegisterSlice';
+import { setArrayList, setArrays, setBoxRegister } from '../../Redux/Slices/boxRegisterSlice';
 
 const BoxRegister = ({ navigation, route }) => {
 
-    const { handleReboxFirest, ReBoxFirst } = useContext(AppContext)
+    const { handleReboxFirest, } = useContext(AppContext)
+    // const { handleReboxFirest, ReBoxFirst } = useContext(AppContext)
     const { type } = route.params;
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [showImagesUrl, setshowImagesUrl] = useState([]);
-    const [isSlected, setisSelected] = useState(false);
     const [Activebtn, setActivebtn] = useState('');
 
     const dispatch = useDispatch();
-    const boxRegister = useSelector((state) => state.boxregister.boxRegister)
-
-    // const [selectedImages, setSelectedImages] = useState([]);
-    // const [UrlShows, setUrlShows] = useState('false');
-
+    const ReBoxFirst = useSelector((state) => state.boxregister.boxRegister)
 
     const handleInputChange = (fieldName, text) => {
         dispatch(setBoxRegister({ fieldName, text }))
@@ -56,22 +52,21 @@ const BoxRegister = ({ navigation, route }) => {
     };
     useEffect(() => {
         getStore(type);
-        // setSelectedImages([]);
     }, []);
 
     const getStore = async (type) => {
 
-        if (type == "Edit") {
+        // if (type == "Edit") {
 
-            const item = EditBox;
+        //     const item = EditBox;
 
-            handleReboxFirest({
-                BoxName: item.name,
-                Address: item.address,
-                Lenght: '', Width: '', Height: '',
-                OpenTime: item.box_open_time,
-                CloseTime: item.box_close_time
-            })
+        //     handleReboxFirest({
+        //         BoxName: item.name,
+        //         Address: item.address,
+        //         Lenght: '', Width: '', Height: '',
+        //         OpenTime: item.box_open_time,
+        //         CloseTime: item.box_close_time
+        //     })
 
 
             //     // const parsedItem = await AsyncStorage.getItem(Strings.BoxItemKey)
@@ -87,11 +82,11 @@ const BoxRegister = ({ navigation, route }) => {
             //     // setHeight(await AsyncStorage.getItem(Strings.BoxheightKey))
             //     setOpenTime(item.box_open_time)
             //     setCloseTime(item.box_close_time)
-            showImagesUrl.push(item.img1)
-            showImagesUrl.push(item.img2)
-            showImagesUrl.push(item.img3)
+            // showImagesUrl.push(item.img1)
+            // showImagesUrl.push(item.img2)
+            // showImagesUrl.push(item.img3)
             //     console.log(item, "type");
-        }
+        // }
 
     }
     const handleConfirm = date => {
@@ -115,32 +110,10 @@ const BoxRegister = ({ navigation, route }) => {
                 multiple: true,
                 mediaType: 'photo',
             });
-            console.log(images, "iag");
             if (images.length > 2) {
-                if (images.length > 0) {
-
-
-                    // setshowImages(images);
-                    setisSelected(true);
-                    // setSelectedImages();
-
-                    handleReboxFirest('selectedImages', images.map((i, index) => ({
-                        uri: i.path,
-                        type: i.mime,
-                        name: i.modificationDate,
-                        index: index,
-                    })));
-                    setshowImagesUrl([])
-
-                    const arra = []
-                    if (images.length > 0) {
-                        for (let i = 0; i < images.length; i++) {
-                            arra.push(images[i].path);
-                        }
-                        console.log(arra, "---parth");
-                        setshowImagesUrl(arra)
-                    }
-                }
+                dispatch(setBoxRegister({fieldName:'updateimage', text:true }))
+                        const imagesArray = images.map((item) => item.path)
+                       dispatch(setArrayList({ fieldName: 'images', text: imagesArray}));
             }
             else {
                 showMessage({
@@ -158,12 +131,15 @@ const BoxRegister = ({ navigation, route }) => {
     };
 
     const navigateNext = () => {
-        // dispatch(setBoxRegister(ReBoxFirst))
+        // apply all condition 
+
+        // for image checking on  =>  ReBoxFirst.images > 2
         navigation.navigate(Routs.SportScreen, { type: type });
 
     };
     const getdatas = () => {
-        console.log(boxRegister, "=====data");
+        console.log(ReBoxFirst.images, "=====image data");
+        console.log(ReBoxFirst.updateimage, "=====updateimage");
     }
 
     const handleopen = text => {
@@ -174,20 +150,20 @@ const BoxRegister = ({ navigation, route }) => {
         setDatePickerVisibility(true)
         setActivebtn('close')
     };
-
+    const convertInsemple = (date) => {
+        const twelveHourFormat = moment(date, 'HH:mm').format('hh:mm a')
+        return twelveHourFormat == 'Invalid date' ? '' :twelveHourFormat;
+    }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
                 <Text style={styles.titel}>Add your Box details</Text>
-                {isSlected == true ? (
+                {ReBoxFirst.images.length > 0 ? (
                     <View >
                         <TouchableOpacity
                             style={styles.swipest}
                             onPress={() => openImagePicker()}>
-                            {console.log(showImagesUrl, "====pp")}
-                            <SwipeUrl boxData={showImagesUrl} />
-                            {/* {UrlShows == 'true' ? <SwipList boxData={showImagesUrl} /> : <SwipList boxData={showImages} />} */}
-                            {/* {UrlShows === 'true' ? console.log(JSON.stringify(showImagesUrl)) : console.log(showImages)} */}
+                            <SwipeUrl boxData={ReBoxFirst.images} />
                         </TouchableOpacity>
 
                     </View>
@@ -215,7 +191,9 @@ const BoxRegister = ({ navigation, route }) => {
                         </View>
                     </TouchableOpacity>
                 )}
+
                 <Input
+                    click_dis={true}
                     defaults={ReBoxFirst.BoxName}
                     called={false}
                     onChangeText={(txt) => handleInputChange('BoxName', txt)}
@@ -224,6 +202,7 @@ const BoxRegister = ({ navigation, route }) => {
                     headerText={''}
                 />
                 <Input
+                   click_dis={true}
                     defaults={ReBoxFirst.Address}
                     called={false}
                     onChangeText={(txt) => handleInputChange('Address', txt)}
@@ -232,6 +211,7 @@ const BoxRegister = ({ navigation, route }) => {
                     headerText={''}
                 />
                 <Input
+                   click_dis={true}
                     defaults={ReBoxFirst.Lenght}
                     called={false}
                     onChangeText={(txt) => handleInputChange('Lenght', txt)}
@@ -240,6 +220,7 @@ const BoxRegister = ({ navigation, route }) => {
                     headerText={''}
                 />
                 <Input
+                   click_dis={true}
                     defaults={ReBoxFirst.Width}
                     called={false}
                     onChangeText={(txt) => handleInputChange('Width', txt)}
@@ -248,6 +229,7 @@ const BoxRegister = ({ navigation, route }) => {
                     headerText={''}
                 />
                 <Input
+                   click_dis={true}
                     defaults={ReBoxFirst.Height}
                     called={false}
                     onChangeText={(txt) => handleInputChange('Height', txt)}
@@ -265,9 +247,10 @@ const BoxRegister = ({ navigation, route }) => {
                         name={'Open time'}
                         headerText={''}
                         two={true}
-                        input={ReBoxFirst.OpenTime}
+                        input={convertInsemple(ReBoxFirst.OpenTime)}
                         img={ImagePath.time}
                     />
+
                     <Input
                         img={ImagePath.time}
                         defaults={ReBoxFirst.CloseTime}
@@ -277,7 +260,7 @@ const BoxRegister = ({ navigation, route }) => {
                         name={'Close time'}
                         headerText={''}
                         two={true}
-                        input={ReBoxFirst.CloseTime}
+                        input={convertInsemple(ReBoxFirst.CloseTime)}
                     />
                 </View>
 
@@ -291,9 +274,9 @@ const BoxRegister = ({ navigation, route }) => {
                     <TouchableOpacity style={styles.btn} onPress={() => navigateNext()}>
                         <Text style={styles.btntxt}>Next</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn} onPress={() => getdatas()}>
+                    {/* <TouchableOpacity style={styles.btn} onPress={() => getdatas()}>
                         <Text style={styles.btntxt}>check</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                 </View>
 

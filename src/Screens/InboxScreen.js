@@ -24,7 +24,7 @@ import SearchBar from '../Commponent/SearchBar';
 import { Colors, ImagePath } from '../AllData/Utill';
 import * as APIS from '../APIS/Urls'
 import axios from 'axios';
-
+import moment from 'moment';
 const InboxScreen = ({ navigation }) => {
     const [idata, setidata] = useState([])
     const [idata2, setidata2] = useState([]);
@@ -52,7 +52,7 @@ const InboxScreen = ({ navigation }) => {
         const Token = await AsyncStorage.getItem('token');
 
         const body_data = {
-            email: "sahdevdomadiya7@gmail.com",
+            email: "sahdevdomadiya9@gmail.com",
         }
 
         axios({
@@ -196,29 +196,15 @@ const InboxScreen = ({ navigation }) => {
         setidataUser(filtered);
         setVisible(false);
     };
-    const formatDateTime = (inputDateTime) => {
-        const date = new Date(inputDateTime);
-
-        const day = date.getDate();
-        const month = date.getMonth() + 1; // Month is 0-indexed
-        const year = date.getFullYear();
-
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        const formattedDay = day < 10 ? `0${day}` : day;
-        const formattedMonth = month < 10 ? `0${month}` : month;
-        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-        return `${formattedDay}-${formattedMonth}-${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
-    };
+  
     const renderItem = ({ item }) => {
 
-        // const bookingTime = formatDateTime(item.bookingTime)
 
-        // const formattedDate = formatDate(item.date)
+const starttimes = moment.utc(item.start_time * 1000).format('h:mm A'); // Convert seconds to milliseconds
+const endtime = moment.utc(item.end_time * 1000).format('h:mm A'); // Convert seconds to milliseconds
+const datefimnal = moment.utc(item.start_time * 1000).format('DD-MMM-YYYY'); // Convert seconds to milliseconds
+
+const fulltime =`${starttimes} - ${endtime}`  ;
 
         return (
             <View style={styles.timeSlot}>
@@ -230,43 +216,43 @@ const InboxScreen = ({ navigation }) => {
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Username</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
+                    <Text style={styles.textLeft}>{item.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Phone</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
+                    <Text style={styles.textLeft}></Text>
                 </View>
                 <View style={{ flexDirection: 'row', }}>
 
                     <Text style={styles.textLeft}>Time</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
+                    <Text style={styles.textLeft}>{fulltime}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Date</Text>
-                    <Text style={[styles.textLeft, { color: 'red' }]}>{item.start_time}</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{datefimnal}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>BoxName</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
+                    <Text style={styles.textLeft}>{item.box_name}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Booked Time</Text>
+                    <Text style={styles.textLeft}>{item.created_at}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>Amount</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-
-                    <Text style={styles.textLeft}>Amount</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
+                    <Text style={styles.textLeft}>{item.amount}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={styles.textLeft}>message</Text>
-                    <Text style={styles.textLeft}>{item.start_time}</Text>
+                    <Text style={styles.textLeft}>{item.status}</Text>
                 </View>
                 {/* {item.message === 'booked' ?
                 <TouchableOpacity

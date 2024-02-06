@@ -14,7 +14,6 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two
     };
 
     return (
-        // <KeyboardAwareScrollView>
 
         <TouchableOpacity
             disabled={click_dis} style={{ flex: two && 1 }} onPress={click} >
@@ -55,7 +54,6 @@ const Input = ({ name, onChangeText, headerText, eye, called, defaults, img, two
             </View>
 
         </TouchableOpacity>
-        // </KeyboardAwareScrollView>
 
     );
 };

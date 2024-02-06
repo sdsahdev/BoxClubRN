@@ -15,15 +15,31 @@ const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const { user, loading, error } = useSelector((state) => state.LoginReducer)
 
-    const [email, setemail] = useState('sahdevdomadiya7@gmail.com')
-    const [password, setpassword] = useState('')
+    const [email, setemail] = useState('sahdevdomadiya9@gmail.com')
+    const [password, setpassword] = useState('dev@123')
     const handletxtChange = (text) => {
         setemail(text)
     }
     const handlepasword = (text) => {
         setpassword(text)
     }
-
+const testAPi =  ()=> {
+  fetch('http://13.234.112.36:8080/api/v1/user/get-block', {
+        headers: {
+            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YWx1ZSI6eyJtb2JpbGUiOiIrOTE5OTExNzA3NDc0Iiwicm9sZSI6IlVzZXIiLCJfaWQiOiI2MzZjYWY4ZDc4NDQ1NjJhMTg3ZmQxNDUiLCJwYWlkIjpmYWxzZX0sImlhdCI6MTcwNjg2ODczMCwiZXhwIjoxNzM4NDA0NzMwfQ.YICGvhhS9-Go1IOCmS7Cz343zXbVhzHKXB1di2NkLVc'
+        }
+    })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res, "===")
+            // const blockedProfile = res.data.data.blockUser;
+            // setblockUsers(Object.values(blockedProfile));
+        })
+        .catch(er => {
+            console.error(er)
+            console.log(er);
+        });
+}
     const loginApi = async () => {
         const body_data = {
             email: email,
@@ -71,8 +87,8 @@ const LoginScreen = ({ navigation }) => {
                     Login to continue
                 </Text>
                 <View style={{ marginTop: hp(4) }}>
-                    <Input called={false} onChangeText={handletxtChange} name={'Email'} img={ImagePath.mail} headerText={''} />
-                    <Input called={false} onChangeText={handlepasword} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
+                    <Input called={false} onChangeText={handletxtChange} name={'Email'} img={ImagePath.mail} headerText={''}  defaults={email}/>
+                    <Input called={false} onChangeText={handlepasword} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} defaults={password} />
                 </View>
 
 

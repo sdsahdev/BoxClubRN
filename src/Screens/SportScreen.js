@@ -77,10 +77,10 @@ const SportScreen = ({ navigation, route }) => {
                 <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(Routs.TimeScreen, { type: type })}>
                     <Text style={styles.btntxt}>Next</Text>
                 </TouchableOpacity>
-
+{/* 
                 <TouchableOpacity style={styles.btn} onPress={() => console.log(boxRegister, "====love")}>
                     <Text style={styles.btntxt}>check</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
             </View>
         </View>
