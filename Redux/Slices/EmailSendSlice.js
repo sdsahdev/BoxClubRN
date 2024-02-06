@@ -3,12 +3,12 @@ import * as APIS from "../../src/APIS/Urls";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 
-export const loginUser = createAsyncThunk(`loginUser`, async (body_data) => {
+export const SendEmail = createAsyncThunk(`sendEmail`, async (body_data) => {
     console.log(body_data, "===bodydata===");
 
     try {
         const response = await axios({
-            url: `${APIS.ADMIN_bASE_URL}${APIS.Login}`,
+            url: `${APIS.bASE_URL}${APIS.Send_Otp}`,
             method: 'POST',
             data: body_data,
             headers: {
@@ -17,18 +17,21 @@ export const loginUser = createAsyncThunk(`loginUser`, async (body_data) => {
             },
         });
 
-        console.log('Response:', response.data?.data);
+        console.log('Response:', response.data);
 
+        if (response?.data?.success) {
+            console.log(response?.data?.otp);
+            const otp = response?.data?.otp;
+            return otp;
+        }
         showMessage({
             message: response?.data?.message,
             type: response?.data?.success ? 'success' : 'danger',
-            backgroundColor: response?.data?.success ? "green" : 'red',
-            icon: response?.data?.success ? "success" : 'danger',
-            color: "#fff",
+            backgroundColor: response?.data?.success ? "green" : 'red', // background color
+            icon: response?.data?.success ? "success" : 'danger', // background color
+            color: "#fff", // text color
         });
-
-        const user = response?.data?.data;
-        return user; 
+       
     } catch (error) {
         console.error('Error:', error);
 
@@ -46,41 +49,38 @@ export const loginUser = createAsyncThunk(`loginUser`, async (body_data) => {
 });
 
 
-const LoginSlice = createSlice({
+const EmailSendSlice = createSlice({
     name: 'login',
     initialState: {
-        user: null,
+        otp: null,
         loading: false,
         error: null,
-        isLogin: false,
-        email:null
-        },
+        type:null
+    },
     reducers: {
-        setEmail: (state, action) => {
-            state.email = action.payload;
+        setTypeOtp: (state, action) => {
+            state.type = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loginUser.pending, (state) => {
-                console.log("===login loading==");
+            .addCase(SendEmail.pending, (state) => {
+                console.log("===otp loading==");
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
-                console.log(action.payload, "===user datass");
-                state.isLogin=true
+            .addCase(SendEmail.fulfilled, (state, action) => {
+                console.log(action.payload, "===otp  datass");
                 state.loading = false;
-                state.user = action.payload;
-                state.email = action.payload.email;
+                state.otp = action.payload;
             })
-            .addCase(loginUser.rejected, (state, action) => {
-                console.log(action.error.message, "===Error in login api==");
+            .addCase(SendEmail.rejected, (state, action) => {
+                console.log(action.error.message, "===Error in send otp api==");
                 state.loading = false;
                 state.error = action.error.message;
             });
     },
 });
-export  const {setEmail} =LoginSlice.actions;
 
-export default LoginSlice.reducer;
+export  const {setTypeOtp} =EmailSendSlice.actions;
+export default EmailSendSlice.reducer;

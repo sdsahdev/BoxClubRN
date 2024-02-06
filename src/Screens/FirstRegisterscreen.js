@@ -17,14 +17,16 @@ import SwipList from '../Commponent/SwipList';
 import axios from 'axios';
 
 import { AppContext } from '../Context/AppProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEmail } from '../../Redux/Slices/LoginSlice';
+import { setTypeOtp } from '../../Redux/Slices/EmailSendSlice';
 
 const FirstRegisterscreen = ({ navigation }) => {
-    const { TimeData, setTimeData } = useContext(AppContext)
-
+    const dispatch = useDispatch();
     const [UserName, setuserName] = useState('')
     const [Password, setpassword] = useState('')
     const [conPassword, setconPassword] = useState('')
-    const [Email, setEamil] = useState('')
+    const [Email, setEmailText] = useState('')
     const [PhoneNumber, setPhoneNumber] = useState('')
     const [Address, setAddress] = useState('')
     const [Upi, setUpi] = useState('')
@@ -35,17 +37,20 @@ const FirstRegisterscreen = ({ navigation }) => {
     useEffect(() => {
         getStore()
     }, []);
-
+const handleEmail = (emailtext)=> {
+    dispatch(setEmail(emailtext))
+    setEmailText(emailtext)
+}
     const getStore = async () => {
-        setuserName(await AsyncStorage.getItem(Strings.ReNameKey))
-        setEamil(await AsyncStorage.getItem(Strings.ReEmailKey))
-        setPhoneNumber(await AsyncStorage.getItem(Strings.RephoneKey))
-        setAddress(await AsyncStorage.getItem(Strings.ReAddressKey))
-        setUpi(await AsyncStorage.getItem(Strings.ReUpiKey))
-        setCompanyname(await AsyncStorage.getItem(Strings.ReCompanyKey))
-        setpassword(await AsyncStorage.getItem(Strings.RepasswordKey))
-        setconPassword(await AsyncStorage.getItem(Strings.ReCopasswordKey))
-        console.log(await AsyncStorage.getItem(Strings.ReEmailKey), "===emial");
+        // setuserName(await AsyncStorage.getItem(Strings.ReNameKey))
+        // setEmailText(await AsyncStorage.getItem(Strings.ReEmailKey))
+        // setPhoneNumber(await AsyncStorage.getItem(Strings.RephoneKey))
+        // setAddress(await AsyncStorage.getItem(Strings.ReAddressKey))
+        // setUpi(await AsyncStorage.getItem(Strings.ReUpiKey))
+        // setCompanyname(await AsyncStorage.getItem(Strings.ReCompanyKey))
+        // setpassword(await AsyncStorage.getItem(Strings.RepasswordKey))
+        // setconPassword(await AsyncStorage.getItem(Strings.ReCopasswordKey))
+        // console.log(await AsyncStorage.getItem(Strings.ReEmailKey), "===emial");
     }
 
     const setStore = async () => {
@@ -114,9 +119,10 @@ const FirstRegisterscreen = ({ navigation }) => {
     }
 
     const handleContine = () => {
-        setStore()
+        // setStore()
         // Admin_registerAPI()
-        navigation.navigate(Routs.OtpScreen, { email: Email })
+        navigation.navigate(Routs.OtpScreen)
+        dispatch(setTypeOtp(Strings.AdminRegisterType))
     }
 
     const openImagePicker = async () => {
@@ -185,15 +191,13 @@ const FirstRegisterscreen = ({ navigation }) => {
                         </TouchableOpacity>
                     }
                     <Input defaults={UserName} click_dis={true} called={false} onChangeText={(text) => setuserName(text)} name={'Name'} img={ImagePath.user} headerText={''} />
-                    <Input defaults={Email} click_dis={true} called={false} onChangeText={(text) => setEamil(text)} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
+                    <Input defaults={Email} click_dis={true} called={false} onChangeText={(text) => handleEmail(text)} name={'Enter your email'} img={ImagePath.mail} headerText={''} />
                     <Input defaults={PhoneNumber} click_dis={true} called={false} onChangeText={(text) => setPhoneNumber(text)} name={'Enter your phonenumber'} img={ImagePath.telephone} headerText={''} />
                     <Input defaults={Address} click_dis={true} called={false} onChangeText={(text) => setAddress(text)} name={'Address'} img={ImagePath.home} headerText={''} />
                     <Input defaults={Upi} click_dis={true} called={false} onChangeText={(text) => setUpi(text)} name={'Upi id'} img={ImagePath.upi} headerText={''} />
                     <Input defaults={Companyname} click_dis={true} called={false} onChangeText={(text) => setCompanyname(text)} name={'Company Name'} img={ImagePath.Boxname} headerText={''} />
                     <Input defaults={Password} click_dis={true} called={false} onChangeText={(text) => setpassword(text)} name={'Enter your password'} img={ImagePath.loack} headerText={''} eye={true} />
                     <Input defaults={conPassword} click_dis={true} called={false} onChangeText={(text) => setconPassword(text)} name={'Confirm your password'} img={ImagePath.loack} headerText={''} eye={true} />
-
-
                     <View style={styles.checkview}>
 
                         <CheckBox

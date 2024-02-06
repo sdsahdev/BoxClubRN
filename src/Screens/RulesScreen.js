@@ -119,7 +119,7 @@ const RulesScreen = ({ route }) => {
                     icon: response.data.success ? "success" : 'danger', // background color
                     color: "#fff", // text color
                     onHide: () => {
-                        // response.data.success && navigation.navigate(Routs.OtpScreen)
+                      
                     }
                 });
             })

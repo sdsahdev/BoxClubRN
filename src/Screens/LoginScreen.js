@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { user, loading, error } = useSelector((state) => state.LoginReducer)
+    const { user, loading, error, isLogin } = useSelector((state) => state.LoginReducer)
 
     const [email, setemail] = useState('sahdevdomadiya9@gmail.com')
     const [password, setpassword] = useState('dev@123')
@@ -29,22 +29,16 @@ const LoginScreen = ({ navigation }) => {
             password: password,
             type: 'login'
         }
-        dispatch(loginUser(body_data)).then(() => {
-            navigation.navigate(Routs.BottomTabScreen)
-        })
-            .catch((error) => {
-                showMessage({
-                    message: error?.message,
-                    type: "danger",
-                    backgroundColor: "red",
-                    color: "#fff",
-                    icon: 'danger',
-                });
 
-            });;
+        // navigate immediately to login
+        await dispatch(loginUser(body_data));
+                if(isLogin){        
+                            console.log(isLogin,"===after");
 
-
-
+                    navigation.navigate(Routs.BottomTabScreen)
+                }
+            
+           
     }
     return (
         <View style={{ flex: 1 }}>

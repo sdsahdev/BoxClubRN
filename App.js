@@ -23,6 +23,7 @@ import store from './Redux/Store/store';
 import { Provider } from 'react-redux';
 import BoxRegister from './src/Screens/BoxRegister';
 import FirstRegisterscreen from './src/Screens/FirstRegisterscreen';
+import ChangePassword from './src/Screens/ChangePassword';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
             <Stack.Screen name={Routs.DrawerScreen} component={DrawerScreen} />
             <Stack.Screen name={Routs.BoxDetailsScreen} component={BoxDetailsScreen} />
             <Stack.Screen name={Routs.DateTimeScreen} component={DateTimeScreen} />
+            <Stack.Screen name={Routs.ChangePassword} component={ChangePassword} />
           </Stack.Navigator>
           <FlashMessage position="bottom" />
 

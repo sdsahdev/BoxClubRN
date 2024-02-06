@@ -4,10 +4,13 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TopHeader from '../Commponent/TopHeader';
-import { ImagePath } from '../AllData/Utill';
+import { ImagePath, Routs, Strings } from '../AllData/Utill';
 import Menu from '../Commponent/Menu';
+import { useDispatch } from 'react-redux';
+import { setTypeOtp } from '../../Redux/Slices/EmailSendSlice';
 
 const ProfileScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
     const [user, setuser] = useState('')
     useEffect(() => {
         const fetchData = async () => {
@@ -67,9 +70,9 @@ const ProfileScreen = ({ navigation }) => {
                 {/* {console.log(user, "===")} */}
                 <View style={{ marginTop: hp(10) }}>
                     <View >
-
                         {/* <Menu icon={ImagePath.password} name={"Change access"} onpress={() => hpassword()} /> */}
-                        <Menu icon={ImagePath.password} name={"Change Password"} onpress={() => console.log("change password")} />
+                        <Menu icon={ImagePath.password} name={"Change Password"} onpress={() => {{navigation.navigate(Routs.OtpScreen)}
+                     dispatch(setTypeOtp(Strings.PassChangeType))}} />
                     </View>
                     {/* <Menu icon={imagesClass.call} name={"Download report"} onpress={() => hcontact()} /> */}
                     {/* <Menu icon={imagesClass.about} name={""} onpress={() => habout()} /> */}

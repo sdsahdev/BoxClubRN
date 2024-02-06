@@ -57,6 +57,10 @@ export const Strings = {
     AmountKey: 'AmountKey',
 
     BoxItemKey: 'BoxItemKey',
+
+
+    AdminRegisterType: 'AdminRegisterType',
+    PassChangeType: 'PassChangeType',
 };
 
 export const Routs = {
@@ -74,7 +78,8 @@ export const Routs = {
     HomeScreen: 'HomeScreen',
     DrawerScreen: 'DrawerScreen',
     BoxDetailsScreen: 'BoxDetailsScreen',
-    DateTimeScreen: 'DateTimeScreen'
+    DateTimeScreen: 'DateTimeScreen',
+    ChangePassword: 'ChangePassword'
 }
 export const ImagePath = {
 
