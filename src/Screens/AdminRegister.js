@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import FastImage from 'react-native-fast-image';
-import {
+import { 
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
