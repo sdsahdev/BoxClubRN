@@ -141,15 +141,15 @@ const HomeScreen = ({navigation}) => {
 
       <View
         style={{
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           flexDirection: 'row',
-          marginTop: hp(4),
+          marginTop:hp(4.5)
         }}>
-        <FastImage
+        {/* <FastImage
           source={ImagePath.menu}
           style={{width: wp(10), margin: hp(2), height: hp(8)}}
           resizeMode="contain"
-        />
+        /> */}
         <Text
           style={{
             color: '#fff',
@@ -159,11 +159,11 @@ const HomeScreen = ({navigation}) => {
           }}>
           BoxClub
         </Text>
-        <FastImage
+        {/* <FastImage
           source={ImagePath.notification}
           style={{width: wp(10), margin: hp(2), height: hp(8)}}
           resizeMode="contain"
-        />
+        /> */}
       </View>
       <View style={styles.bottomview}>
         <FlatList
