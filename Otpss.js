@@ -13,7 +13,7 @@ import {
 import { Colors } from './src/AllData/Utill';
 
 
-const Otpss = () => {
+const Otpss =   () => {
     const [otp, setOtp] = useState('');
     const otpInputRefs = Array.from({length: 4}, () => useRef(null));
     const handleOtpChange = (index, text) => {
