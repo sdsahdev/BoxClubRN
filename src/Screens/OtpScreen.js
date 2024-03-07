@@ -19,27 +19,26 @@ import axios from 'axios';
 import {showMessage} from 'react-native-flash-message';
 import TopHeader from '../Commponent/TopHeader';
 import {useDispatch, useSelector} from 'react-redux';
-import { SendEmail } from '../../Redux/Slices/EmailSendSlice';
+import {SendEmail} from '../../Redux/Slices/EmailSendSlice';
 const OtpScreen = ({navigation, route}) => {
   const otpInputRefs = Array.from({length: 4}, () => useRef(null));
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [ApiOtp, setApiOtp] = useState('');
+  //   const [isLoading, setIsLoading] = useState(false);
+  //   const [ApiOtp, setApiOtp] = useState('');
   const [otp, setOtp] = useState('');
 
   const dispatch = useDispatch();
-  const {user,email} = useSelector(state => state.LoginReducer);
+  const {user, email} = useSelector(state => state.LoginReducer);
   const ApiOtp = useSelector(state => state.SendEmailReducer.otp);
   const isLoading = useSelector(state => state.SendEmailReducer.loading);
   const error = useSelector(state => state.SendEmailReducer.error);
   const type = useSelector(state => state.SendEmailReducer.type);
 
   const send_API = () => {
-
     const datas = {
       email: email,
     };
-    dispatch(SendEmail(datas))
-    return
+    dispatch(SendEmail(datas));
+    return;
     axios({
       url: `${APIS.bASE_URL}${APIS.Send_Otp}`,
       method: 'POST',
@@ -75,7 +74,6 @@ const OtpScreen = ({navigation, route}) => {
         // setIsLoading(false)
         console.error('Error:', error);
       });
-
   };
   const handleOtpChange = (index, text) => {
     const sanitizedText = text.replace(/[^0-9]/g, '').slice(0, 1);
@@ -91,32 +89,33 @@ const OtpScreen = ({navigation, route}) => {
       otpInputRefs[index - 1].current.focus();
     }
 
-    // Move to the next input if available
-    if (text !== '' && index < otpInputRefs.length - 1) {
+    // Move to the next input if availables
+    else if (text !== '' && index < otpInputRefs.length - 1) {
       otpInputRefs[index + 1].current.focus();
+    } else {
+      if (index != 0) {
+        otpInputRefs[otp.length + 1]?.current.focus();
+      }
     }
   };
 
   const handleSubmit = async () => {
-
-      navigation.navigate(Routs.ChangePassword);
-      return
-    if(ApiOtp == otp){
-        if(type == Strings.PassChangeType){
-            navigation.navigate(Routs.ChangePassword);
-        }else if(type == Strings.AdminRegisterType){
-             navigation.navigate(Routs.LoginScreen);
-        }
-    }else{
-        showMessage({
-            message: "please enter valid otp",
-            type: 'Danger',
-            backgroundColor: 'red', // background color
-            color: '#fff', // text color
-
-        });
+    navigation.navigate(Routs.ChangePassword);
+    return;
+    if (ApiOtp == otp) {
+      if (type == Strings.PassChangeType) {
+        navigation.navigate(Routs.ChangePassword);
+      } else if (type == Strings.AdminRegisterType) {
+        navigation.navigate(Routs.LoginScreen);
+      }
+    } else {
+      showMessage({
+        message: 'please enter valid otp',
+        type: 'Danger',
+        backgroundColor: 'red', // background color
+        color: '#fff', // text color
+      });
     }
-
   };
   return (
     <View style={{flex: 1}}>
